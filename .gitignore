@@ -1,0 +1,4 @@
+# Generated Curbpack output — keep it out of git.
+/review.json
+/.github/curbpack/cache/
+/review-pack/

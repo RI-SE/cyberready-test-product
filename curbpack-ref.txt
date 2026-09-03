@@ -1,0 +1,9 @@
+Local Curbpack clone used to demonstrate review of this tree.
+Not a Curbpack product file. Not a pack. Not a digest we computed.
+
+curbpack_repo: /Users/DanielFl/Documents/aProjects/aslak/curbpack
+curbpack_commit: af935bef61c272ac9cde4b1e1076616907d920f4
+pack_id: house-policy
+pack_version: 0.1.0
+pack_versions_string: house-policy@0.1.0
+pack_digest: not exposed as a field on review --json or context-pack; not invented here
