@@ -2,3 +2,5 @@
 /review.json
 /.github/curbpack/cache/
 /review-pack/
+# Runtime log path named in config/audit.json — not checked in.
+/var/

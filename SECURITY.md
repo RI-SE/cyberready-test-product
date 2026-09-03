@@ -9,7 +9,8 @@ Do not open public issues for sensitive reports.
 
 We acknowledge within two business days and coordinate disclosure with reporters.
 
-## Installer
+## Product files
 
-The install script for this product is `src/install.sh`.
-That path is in this repository.
+Lantern starts with `src/lantern.sh`.
+Audit logging is enabled. The setting is in `config/audit.json`.
+The product description is `docs/overview.md`.
