@@ -2,5 +2,8 @@
 /review.json
 /.github/curbpack/cache/
 /review-pack/
-# Runtime log path named in config/audit.json — not checked in.
+# Local runtime: SQLite, audit log, pidfile, server log.
 /var/
+__pycache__/
+*.pyc
+*.pyo

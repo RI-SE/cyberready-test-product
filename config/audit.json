@@ -1,4 +1,0 @@
-{
-  "audit_logging": true,
-  "log_file": "var/audit.log"
-}

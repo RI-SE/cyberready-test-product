@@ -11,6 +11,6 @@ We acknowledge within two business days and coordinate disclosure with reporters
 
 ## Product files
 
-Lantern starts with `src/lantern.sh`.
-Audit logging is enabled. The setting is in `config/audit.json`.
-The product description is `docs/overview.md`.
+Glucose Log is started from `src/app.py`.
+The product architecture is described in `docs/overview.md`.
+How to run the application is in `README.md`.
