@@ -2,7 +2,7 @@
 
 Glucose Log (`glucose-log` in `package.json`) is a single-process local web application. A developer runs `make start`, which launches `src/app.py` on http://127.0.0.1:8080 and opens a browser.
 
-It is a CyberReady reference/test product. It stores blood-glucose numbers entered by a signed-in user. It does not interpret those numbers or make treatment decisions.
+It lives in the `cyberready-test-product` repository. It is a CyberReady reference/test product. It stores blood-glucose numbers entered by a signed-in user. It does not interpret those numbers or make treatment decisions.
 
 ## Runtime shape
 

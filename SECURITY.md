@@ -2,7 +2,7 @@
 
 ## Reporting
 
-Email security@test-product.invalid with vulnerability details.
+Email security@cyberready-test-product.invalid with vulnerability details.
 Do not open public issues for sensitive reports.
 
 ## Response

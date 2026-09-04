@@ -2,7 +2,7 @@
 
 A tiny local web app that stores blood-glucose values a user types in.
 
-This repository is a **CyberReady reference/test product** named **glucose-log**. It exists so developers can run a real, understandable application and later exercise Curbpack and CTAM against it.
+This repository is **[RI-SE/cyberready-test-product](https://github.com/RI-SE/cyberready-test-product)**, a **CyberReady reference/test product** named **glucose-log**. It exists so developers can run a real, understandable application and later exercise Curbpack and CTAM against it.
 
 It is **not** a medical device, **not** a clinical tool, and **not** medically validated. It does not calculate insulin, recommend treatment, or make clinical decisions. It only stores numbers.
 
