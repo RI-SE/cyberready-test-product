@@ -35,6 +35,15 @@ DISCLAIMER = (
     "It only stores values you enter."
 )
 
+CREDENTIALS_HTML = (
+    '<p class="creds">'
+    "Local test login<br>"
+    "Username: %s<br>"
+    "Password: %s"
+    "</p>"
+    % (html.escape(DEMO_USERNAME), html.escape(DEMO_PASSWORD))
+)
+
 
 def repo_root():
     return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -168,6 +177,7 @@ def page(title, body, status_note=None):
   <style>
     body { font-family: sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; }
     .disclaimer { background: #f4f4f4; padding: 0.75rem 1rem; }
+    .creds { background: #fff6d6; padding: 0.75rem 1rem; }
     .note { color: #8a1f1f; }
     label, input { display: block; margin: 0.4rem 0; }
     table { border-collapse: collapse; width: 100%%; }
@@ -278,7 +288,8 @@ class Handler(BaseHTTPRequestHandler):
         else:
             body = (
                 "<nav><a href=\"/login\">Log in</a></nav>"
-                "<p>Log in to store a blood-glucose measurement.</p>"
+                + CREDENTIALS_HTML
+                + "<p>Log in to store a blood-glucose measurement.</p>"
             )
         self.send_html(page("Home", body))
 
@@ -288,13 +299,17 @@ class Handler(BaseHTTPRequestHandler):
             return
         body = """
 <nav><a href="/">Home</a></nav>
+%s
 <form method="post" action="/login">
-  <label>Username <input name="username" autocomplete="username"></label>
-  <label>Password <input type="password" name="password" autocomplete="current-password"></label>
+  <label>Username <input name="username" value="%s" autocomplete="username"></label>
+  <label>Password <input type="password" name="password" value="%s" autocomplete="current-password"></label>
   <button type="submit">Log in</button>
 </form>
-<p>Local demo account: demo / demo</p>
-"""
+""" % (
+            CREDENTIALS_HTML,
+            html.escape(DEMO_USERNAME),
+            html.escape(DEMO_PASSWORD),
+        )
         self.send_html(page("Login", body, note), status=status)
 
     def handle_login_post(self):

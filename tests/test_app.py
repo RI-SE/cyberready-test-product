@@ -77,6 +77,16 @@ class GlucoseAppTest(unittest.TestCase):
         finally:
             conn.close()
 
+    def test_home_and_login_show_demo_credentials(self):
+        status, home, _ = self.client.request("GET", "/")
+        self.assertEqual(status, 200)
+        self.assertIn("username: demo", home.lower())
+        self.assertIn("password: demo", home.lower())
+        status, login, _ = self.client.request("GET", "/login")
+        self.assertEqual(status, 200)
+        self.assertIn("username: demo", login.lower())
+        self.assertIn("password: demo", login.lower())
+
     def test_unauthenticated_user_cannot_save_a_measurement(self):
         status, _, location = self.client.request(
             "POST",
