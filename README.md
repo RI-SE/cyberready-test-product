@@ -8,7 +8,7 @@ It is **not** a medical device, **not** a clinical tool, and **not** medically v
 
 ## Run
 
-From a clone of this repository:
+From a clone of this repository, `make` lists the available commands.
 
 ```bash
 make start

@@ -5,7 +5,14 @@ URL := http://$(HOST):$(PORT)
 PIDFILE := var/app.pid
 LOGFILE := var/server.log
 
-.PHONY: start stop test
+.PHONY: help start stop test
+
+help:
+	@echo "Glucose Log"
+	@echo
+	@echo "  make start   Start the server at $(URL) and open it in a browser"
+	@echo "  make stop    Stop the server"
+	@echo "  make test    Run the test suite"
 
 start: var
 	@command -v $(PYTHON) >/dev/null || { echo "make start: python3 is required"; exit 1; }
