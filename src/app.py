@@ -440,5 +440,8 @@ def serve():
 
 
 if __name__ == "__main__":
-    configure(default_data_dir())
+    data_dir = os.environ.get("GLUCOSE_LOG_DATA_DIR") or default_data_dir()
+    host = os.environ.get("GLUCOSE_LOG_HOST") or HOST
+    port = int(os.environ.get("GLUCOSE_LOG_PORT") or PORT)
+    configure(data_dir, host=host, port=port)
     serve()

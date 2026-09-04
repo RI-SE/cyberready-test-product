@@ -33,6 +33,10 @@ Run the test suite with:
 make test
 ```
 
+That prints one compact line per case, grouped as unit, functional, and
+integration. Subsets: `make test-unit`, `make test-functional`,
+`make test-integration`.
+
 ## Login
 
 The home page and the login page print the local demo account:

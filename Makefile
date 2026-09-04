@@ -5,14 +5,17 @@ URL := http://$(HOST):$(PORT)
 PIDFILE := var/app.pid
 LOGFILE := var/server.log
 
-.PHONY: help start stop test
+.PHONY: help start stop test test-unit test-functional test-integration
 
 help:
 	@echo "Glucose Log"
 	@echo
-	@echo "  make start   Start the server at $(URL) and open it in a browser"
-	@echo "  make stop    Stop the server"
-	@echo "  make test    Run the test suite"
+	@echo "  make start              Start the server at $(URL) and open it in a browser"
+	@echo "  make stop               Stop the server"
+	@echo "  make test               Run the whole suite"
+	@echo "  make test-unit          Run unit tests only"
+	@echo "  make test-functional    Run functional tests only"
+	@echo "  make test-integration   Run integration tests only"
 
 start: var
 	@command -v $(PYTHON) >/dev/null || { echo "make start: python3 is required"; exit 1; }
@@ -69,7 +72,19 @@ stop:
 
 test:
 	@command -v $(PYTHON) >/dev/null || { echo "make test: python3 is required"; exit 1; }
-	@$(PYTHON) -m unittest discover -s tests -v
+	@$(PYTHON) tests/run.py
+
+test-unit:
+	@command -v $(PYTHON) >/dev/null || { echo "make test-unit: python3 is required"; exit 1; }
+	@$(PYTHON) tests/run.py unit
+
+test-functional:
+	@command -v $(PYTHON) >/dev/null || { echo "make test-functional: python3 is required"; exit 1; }
+	@$(PYTHON) tests/run.py functional
+
+test-integration:
+	@command -v $(PYTHON) >/dev/null || { echo "make test-integration: python3 is required"; exit 1; }
+	@$(PYTHON) tests/run.py integration
 
 var:
 	@mkdir -p var

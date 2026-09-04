@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-"""Behaviour tests for the glucose-log reference app."""
+"""Functional tests: observable HTTP behaviour against an in-process handler."""
 
-import http.client
-import os
 import sqlite3
 import sys
 import tempfile
@@ -10,46 +8,16 @@ import threading
 import unittest
 from http.server import ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import urlencode, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import app  # noqa: E402
+from harness import HttpClient, case  # noqa: E402
 
 
-class HttpClient:
-    def __init__(self, host, port):
-        self.host = host
-        self.port = port
-        self.cookie = None
-
-    def request(self, method, path, body=None, follow=True):
-        headers = {}
-        encoded = None
-        if body is not None:
-            encoded = urlencode(body).encode("utf-8")
-            headers["Content-Type"] = "application/x-www-form-urlencoded"
-            headers["Content-Length"] = str(len(encoded))
-        if self.cookie:
-            headers["Cookie"] = self.cookie
-        conn = http.client.HTTPConnection(self.host, self.port, timeout=5)
-        conn.request(method, path, encoded, headers)
-        resp = conn.getresponse()
-        data = resp.read()
-        set_cookie = resp.getheader("Set-Cookie")
-        if set_cookie:
-            self.cookie = set_cookie.split(";", 1)[0]
-        location = resp.getheader("Location")
-        status = resp.status
-        conn.close()
-        if follow and status in (301, 302, 303, 307, 308) and location:
-            next_path = urlparse(location).path or "/"
-            return self.request("GET", next_path, follow=True)
-        return status, data.decode("utf-8", errors="replace"), location
-
-
-class GlucoseAppTest(unittest.TestCase):
+class GlucoseAppFunctionalTest(unittest.TestCase):
     def setUp(self):
         self.tmpdir = tempfile.TemporaryDirectory()
         app.configure(self.tmpdir.name, host="127.0.0.1", port=0)
@@ -77,17 +45,15 @@ class GlucoseAppTest(unittest.TestCase):
         finally:
             conn.close()
 
-    def test_home_and_login_show_demo_credentials(self):
-        status, home, _ = self.client.request("GET", "/")
+    @case("F-001", "Valid login reaches measurements", "functional")
+    def test_valid_login_reaches_measurements(self):
+        status, body, _ = self.login()
         self.assertEqual(status, 200)
-        self.assertIn("username: demo", home.lower())
-        self.assertIn("password: demo", home.lower())
-        status, login, _ = self.client.request("GET", "/login")
-        self.assertEqual(status, 200)
-        self.assertIn("username: demo", login.lower())
-        self.assertIn("password: demo", login.lower())
+        self.assertIn("glucose", body.lower())
+        self.assertIn("demo", body.lower())
 
-    def test_unauthenticated_user_cannot_save_a_measurement(self):
+    @case("F-002", "Unauthenticated save is refused and audited", "functional")
+    def test_unauthenticated_save_is_refused_and_audited(self):
         status, _, location = self.client.request(
             "POST",
             "/measurements",
@@ -98,14 +64,22 @@ class GlucoseAppTest(unittest.TestCase):
         if location:
             self.assertIn("/login", location)
         self.assertEqual(self.count_measurements(), 0)
+        text = Path(app.audit_path()).read_text(encoding="utf-8")
+        self.assertIn("unauthorized", text)
 
-    def test_valid_login_succeeds(self):
-        status, body, _ = self.login()
+    @case("F-003", "Home and login show demo credentials", "functional")
+    def test_home_and_login_show_demo_credentials(self):
+        status, home, _ = self.client.request("GET", "/")
         self.assertEqual(status, 200)
-        self.assertIn("glucose", body.lower())
-        self.assertIn("demo", body.lower())
+        self.assertIn("username: demo", home.lower())
+        self.assertIn("password: demo", home.lower())
+        status, login, _ = self.client.request("GET", "/login")
+        self.assertEqual(status, 200)
+        self.assertIn("username: demo", login.lower())
+        self.assertIn("password: demo", login.lower())
 
-    def test_invalid_login_fails(self):
+    @case("F-004", "Invalid login fails without a session", "functional")
+    def test_invalid_login_fails_without_a_session(self):
         status, body, location = self.client.request(
             "POST",
             "/login",
@@ -119,6 +93,7 @@ class GlucoseAppTest(unittest.TestCase):
             self.assertIn("login", body.lower())
         self.assertIsNone(self.client.cookie)
 
+    @case("F-005", "Valid measurement can be saved", "functional")
     def test_valid_measurement_can_be_saved(self):
         self.login()
         status, _, location = self.client.request(
@@ -131,6 +106,7 @@ class GlucoseAppTest(unittest.TestCase):
         self.assertIn("/measurements", location)
         self.assertEqual(self.count_measurements(), 1)
 
+    @case("F-006", "Saved measurement can be read back", "functional")
     def test_saved_measurement_can_be_read_back(self):
         self.login()
         self.client.request("POST", "/measurements", {"glucose_value": "7.2"})
@@ -146,7 +122,8 @@ class GlucoseAppTest(unittest.TestCase):
             conn.close()
         self.assertAlmostEqual(row[0], 7.2)
 
-    def test_invalid_measurement_is_rejected(self):
+    @case("F-007", "Invalid measurement is rejected over HTTP", "functional")
+    def test_invalid_measurement_is_rejected_over_http(self):
         self.login()
         for raw in ("", "abc", "-1", "999", "NaN"):
             status, body, _ = self.client.request(
@@ -156,6 +133,7 @@ class GlucoseAppTest(unittest.TestCase):
             self.assertEqual(status, 200)
             self.assertIn("must", body.lower())
 
+    @case("F-008", "SQL injection payload is data or rejected", "functional")
     def test_sql_injection_payload_is_data_or_rejected(self):
         payload = "1; DROP TABLE measurements;--"
         self.login()
@@ -190,36 +168,9 @@ class GlucoseAppTest(unittest.TestCase):
         self.assertIn("measurements", tables)
         self.assertIn("users", tables)
 
-    def test_password_is_not_stored_plaintext(self):
-        conn = sqlite3.connect(app.db_path())
-        try:
-            row = conn.execute(
-                "SELECT password_hash FROM users WHERE username = ?",
-                ("demo",),
-            ).fetchone()
-        finally:
-            conn.close()
-        self.assertIsNotNone(row)
-        stored = row[0]
-        self.assertNotIn("demo", stored)
-        self.assertIn("$", stored)
-
-    def test_login_appends_audit_event(self):
+    @case("F-009", "Login appends an audit event", "functional")
+    def test_login_appends_an_audit_event(self):
         self.login()
         text = Path(app.audit_path()).read_text(encoding="utf-8")
         self.assertIn("login_success", text)
         self.assertIn("demo", text)
-
-    def test_unauthenticated_save_is_audited(self):
-        self.client.request(
-            "POST",
-            "/measurements",
-            {"glucose_value": "6.5"},
-            follow=False,
-        )
-        text = Path(app.audit_path()).read_text(encoding="utf-8")
-        self.assertIn("unauthorized", text)
-
-
-if __name__ == "__main__":
-    unittest.main()
