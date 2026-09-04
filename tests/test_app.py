@@ -190,6 +190,36 @@ class GlucoseAppTest(unittest.TestCase):
         self.assertIn("measurements", tables)
         self.assertIn("users", tables)
 
+    def test_password_is_not_stored_plaintext(self):
+        conn = sqlite3.connect(app.db_path())
+        try:
+            row = conn.execute(
+                "SELECT password_hash FROM users WHERE username = ?",
+                ("demo",),
+            ).fetchone()
+        finally:
+            conn.close()
+        self.assertIsNotNone(row)
+        stored = row[0]
+        self.assertNotIn("demo", stored)
+        self.assertIn("$", stored)
+
+    def test_login_appends_audit_event(self):
+        self.login()
+        text = Path(app.audit_path()).read_text(encoding="utf-8")
+        self.assertIn("login_success", text)
+        self.assertIn("demo", text)
+
+    def test_unauthenticated_save_is_audited(self):
+        self.client.request(
+            "POST",
+            "/measurements",
+            {"glucose_value": "6.5"},
+            follow=False,
+        )
+        text = Path(app.audit_path()).read_text(encoding="utf-8")
+        self.assertIn("unauthorized", text)
+
 
 if __name__ == "__main__":
     unittest.main()

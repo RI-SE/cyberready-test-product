@@ -1,0 +1,8 @@
+{
+  "name": "glucose-log",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CyberReady reference product. Python stdlib web app. Not a Node application. Not a medical device.",
+  "dependencies": {},
+  "devDependencies": {}
+}

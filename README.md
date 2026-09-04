@@ -2,7 +2,7 @@
 
 A tiny local web app that stores blood-glucose values a user types in.
 
-This repository is a **CyberReady reference/test product**. It exists so developers can run a real, understandable application and later exercise Curbpack and CTAM against it.
+This repository is a **CyberReady reference/test product** named **glucose-log**. It exists so developers can run a real, understandable application and later exercise Curbpack and CTAM against it.
 
 It is **not** a medical device, **not** a clinical tool, and **not** medically validated. It does not calculate insulin, recommend treatment, or make clinical decisions. It only stores numbers.
 
@@ -35,12 +35,12 @@ make test
 
 ## Login
 
-Local demo account (created on first start):
+The home page and the login page print the local demo account:
 
 - username: `demo`
 - password: `demo`
 
-Passwords are stored as PBKDF2-HMAC-SHA256 hashes, not plaintext.
+The login form is prefilled. Passwords in SQLite are PBKDF2-HMAC-SHA256 hashes, not plaintext.
 
 ## Add and view measurements
 
@@ -61,20 +61,24 @@ Runtime files live in `var/` (gitignored):
 
 ## Curbpack
 
-This product is configured for the currently supported pack:
+`.curbpack.json` selects:
 
 ```text
 house-policy
+medtech-iec62304
 ```
 
-See `.curbpack.json` and `curbpack-ref.txt`. Pack files live in Curbpack, not in this repository.
+`medtech-iec62304` extends `cra-baseline`, so CRA Annex VII / Art 14 gates run through that pack. Do not also list `cra-baseline` unless you intend to name it twice; Compose already loads the base.
 
-From a sibling `curbpack` checkout pinned to `curbpack-ref.txt`:
+Pack JSON lives in Curbpack, not here. See `curbpack-ref.txt`.
+
+From a sibling `curbpack` checkout at the commit in `curbpack-ref.txt`:
 
 ```bash
 pin=$(awk -F': ' '/^curbpack_commit:/{print $2; exit}' curbpack-ref.txt)
 ( cd ../curbpack && git checkout "$pin" && go build -o /tmp/curbpack ./cmd/curbpack )
+/tmp/curbpack check
 /tmp/curbpack review --repo . --json
 ```
 
-`review --repo` is in-repo document triage. It is not a product verdict, certification, or CE marking.
+`check` evaluates pack gates. `review --repo` triages pack-governed documents. Neither is a product verdict, certification, or CE marking.
