@@ -33,7 +33,10 @@ Measurements belong to the signed-in user id. There is no remote backup. Retenti
 
 - `src/app.py` — application, HTML pages, database access, sessions, audit log
 - `Makefile` — `start`, `stop`, `test`
-- `tests/test_app.py` — HTTP behaviour tests
+- `tests/test_unit.py` — focused component and helper tests
+- `tests/test_functional.py` — HTTP/user-flow behaviour tests
+- `tests/test_integration.py` — integration behaviour tests
+- `tests/run.py` — grouped test-suite runner
 - `package.json` — product name `glucose-log`; empty npm dependency maps
 - `docs/overview.md` — this file
 - `docs/annex-vii/` — CRA-shaped drafts (risk, support period, user manual security)

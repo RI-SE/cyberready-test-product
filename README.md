@@ -76,13 +76,64 @@ medtech-iec62304
 
 Pack JSON lives in Curbpack, not here. See `curbpack-ref.txt`.
 
-From a sibling `curbpack` checkout at the commit in `curbpack-ref.txt`:
+Use a labelled pre-beta binary that includes the merged hardening reference in
+`curbpack-ref.txt`. Keep its absolute path in `CURBPACK_BIN` so PATH cannot select
+an older release. This reference is for Curbpack, not the application's version.
+
+### Step 1 — record the baseline
+
+Use a fresh disposable clone of this test product. The commands below do not
+require starting the application server:
 
 ```bash
-pin=$(awk -F': ' '/^curbpack_commit:/{print $2; exit}' curbpack-ref.txt)
-( cd ../curbpack && git checkout "$pin" && go build -o /tmp/curbpack ./cmd/curbpack )
-/tmp/curbpack check
-/tmp/curbpack review --repo . --json
+export CURBPACK_BIN=/absolute/path/to/curbpack-prebeta
+"$CURBPACK_BIN" version
+"$CURBPACK_BIN" scan
+"$CURBPACK_BIN" check --json
+"$CURBPACK_BIN" review --repo . --json
 ```
 
-`check` evaluates pack gates. `review --repo` triages pack-governed documents. Neither is a product verdict, certification, or CE marking.
+The configured packs are house-policy and medtech-iec62304 (including its CRA
+base). The baseline gate check should pass; record any unexpected existing
+failure before continuing. `review --repo` is document triage, not a product
+verdict or a substitute for `make test`.
+
+### Step 2 — remove one file and observe its gate
+
+Move one file to a backup, run `check`, then restore it and recheck. Each row
+was tested independently against a passing baseline. **Do not run `share` or
+`--heal` while a file is absent:** those commands can recreate draft inputs.
+
+| Remove X | Expected new failed gate Y |
+|---|---|
+| `SECURITY.md` | `HOUSE-SECURITY-MD` |
+| `.well-known/security.txt` | `HOUSE-SECURITY-TXT` |
+| `docs/annex-vii/risk_assessment.md` | `CRA-ANNEX-VII-RISK` |
+| `docs/medtech/software_safety_class.md` | `MD-SW-CLASS` |
+| `docs/medtech/problem_resolution.md` | `MD-PROBLEM-RESOLUTION` |
+
+For example, from the test-product root:
+
+```bash
+mv SECURITY.md SECURITY.md.saved
+"$CURBPACK_BIN" check --json       # expected exit 1; HOUSE-SECURITY-MD
+mv SECURITY.md.saved SECURITY.md
+"$CURBPACK_BIN" check --json       # expected exit 0 again
+```
+
+Restore the file even if a result differs. The selected packs do not define an
+application-test-presence gate: deleting a Python test is not this exercise.
+Application tests are `tests/test_unit.py`, `tests/test_functional.py` and
+`tests/test_integration.py`, run with `make test`.
+
+### Step 3 — create and review the restored handoff
+
+```bash
+"$CURBPACK_BIN" share --bundle
+"$CURBPACK_BIN" review review-pack --json
+```
+
+Open `review-pack/evidence-bundle.html`. Integrity and declared artifact coverage
+are separate from authenticity and applicability. These commands do not grant
+certification, CE marking, or a product approval. Keep this private test product
+and its reports out of public Curbpack issues and pull requests.

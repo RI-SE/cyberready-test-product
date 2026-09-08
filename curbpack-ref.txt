@@ -2,8 +2,8 @@ Local Curbpack clone used to demonstrate review and check of this tree.
 Not a Curbpack product file. Not a pack. Not a digest we computed.
 
 curbpack_repo: ../curbpack
-curbpack_commit: af935bef61c272ac9cde4b1e1076616907d920f4
+curbpack_commit: 40d80909db6b19fa3309351e8d9998b0e305c468
 pack_id: house-policy,medtech-iec62304
 pack_versions_string: house-policy@0.1.0,medtech-iec62304@0.2.0
 extends: medtech-iec62304 extends cra-baseline@0.1.0
-pack_digest: not exposed as a field on review --json or context-pack; not invented here
+pack_digest: use the versioned evaluation input identity emitted by the selected Curbpack build; no aggregate digest is invented here
