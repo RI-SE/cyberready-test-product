@@ -144,7 +144,7 @@ was tested independently against a passing baseline. **Do not run `share` or
 | `docs/medtech/software_safety_class.md` | `MD-SW-CLASS` |
 | `docs/medtech/problem_resolution.md` | `MD-PROBLEM-RESOLUTION` |
 
-For example, from the test-product root:
+For example, from the cyberready-test-product root:
 
 ```bash
 mv SECURITY.md SECURITY.md.saved
