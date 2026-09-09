@@ -16,10 +16,10 @@ Named repository states **R1…Rn** are the setup interface (Test Procedures
 
 ```bash
 cd external_test/curbpack
-make list                       # R1 R2 R3
-make setup STATE=R2             # reset to main, then missing SECURITY.md
+./setup.sh --list               # R1 R2 R3
+./setup.sh R2                   # reset to main, then missing SECURITY.md
 # inspect the repo; run curbpack check if you want
-make reset                      # back to main
+./reset.sh                      # back to main
 ```
 
 Registry: `states.md` + `states.list` + `states/<ID>.sh` — change all three
