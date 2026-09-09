@@ -24,7 +24,7 @@ start: var
 		echo "Glucose Log is already running at $(URL)"; \
 	else \
 		rm -f $(PIDFILE); \
-		$(PYTHON) -c 'import subprocess, sys; log = open("$(LOGFILE)", "a"); p = subprocess.Popen([sys.executable, "src/app.py"], stdout=log, stderr=subprocess.STDOUT, start_new_session=True); open("$(PIDFILE)", "w").write("%s\n" % p.pid)'; \
+		GLUCOSE_LOG_HOST=$(HOST) GLUCOSE_LOG_PORT=$(PORT) $(PYTHON) -c 'import os, subprocess, sys; log = open("$(LOGFILE)", "a"); p = subprocess.Popen([sys.executable, "src/app.py"], stdout=log, stderr=subprocess.STDOUT, start_new_session=True, env=os.environ); open("$(PIDFILE)", "w").write("%s\n" % p.pid)'; \
 		i=0; \
 		until $(PYTHON) -c "import urllib.request; urllib.request.urlopen('$(URL)', timeout=0.3)" 2>/dev/null; do \
 			if [ -f $(PIDFILE) ] && ! kill -0 $$(cat $(PIDFILE)) 2>/dev/null; then \

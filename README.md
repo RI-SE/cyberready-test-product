@@ -6,28 +6,56 @@ This repository is **[RI-SE/cyberready-test-product](https://github.com/RI-SE/cy
 
 It is **not** a medical device, **not** a clinical tool, and **not** medically validated. It does not calculate insulin, recommend treatment, or make clinical decisions. It only stores numbers.
 
-## Run
+## Get it running
 
-From a clone of this repository, `make` lists the available commands.
+The app is Python 3 and the standard library. There is nothing to install with pip, venv, or npm.
+
+On a Mac you need Git, `make`, and `python3`. A stock macOS install often has none of those until Apple's command line tools are present:
 
 ```bash
+xcode-select --install
+```
+
+That typically provides `/usr/bin/make` and `/usr/bin/python3`. Check:
+
+```bash
+make --version
+python3 --version
+```
+
+Then:
+
+```bash
+git clone https://github.com/RI-SE/cyberready-test-product.git
+cd cyberready-test-product
 make start
 ```
 
-That command:
+`make start` checks that `python3` can import `hashlib`, `http.server`, `secrets`, and `sqlite3`, creates `var/`, starts http://127.0.0.1:8080, and opens that URL in the default browser.
 
-1. checks that Python 3 and the standard library modules are available
-2. creates `var/` and initializes the SQLite database if needed
-3. starts the server at http://127.0.0.1:8080
-4. opens that URL in the default browser
+Log in with **demo** / **demo** (shown on the home and login pages).
 
-Stop it with:
+If `python3` is still missing after the command line tools, install Python 3 (Homebrew `brew install python` is enough) and retry `make start`. If the interpreter is not named `python3`:
+
+```bash
+make start PYTHON=python
+```
+
+If port 8080 is already taken, `make start` waits and then times out. Stop the other process, or use another port:
+
+```bash
+make start PORT=8081
+```
+
+Stop the server with:
 
 ```bash
 make stop
 ```
 
-Run the test suite with:
+`make` with no arguments lists the commands.
+
+## Tests
 
 ```bash
 make test
@@ -74,7 +102,10 @@ medtech-iec62304
 
 `medtech-iec62304` extends `cra-baseline`, so CRA Annex VII / Art 14 gates run through that pack. Do not also list `cra-baseline` unless you intend to name it twice; Compose already loads the base.
 
-Pack JSON lives in Curbpack, not here. See `curbpack-ref.txt`.
+Pack JSON used for ordinary `check` still comes from the Curbpack binary
+(see `curbpack-ref.txt`). Frozen copies for this product, plus claim maps and
+fault-injection scripts, live in `external_test/curbpack/`. Point
+`CURBPACK_PACKS_DIR` at `external_test/curbpack/packs` to evaluate those copies.
 
 Use a labelled pre-beta binary that includes the merged hardening reference in
 `curbpack-ref.txt`. Keep its absolute path in `CURBPACK_BIN` so PATH cannot select

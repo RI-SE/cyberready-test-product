@@ -1,0 +1,149 @@
+{
+  "id": "cra-baseline",
+  "name": "CRA Annex VII draft structure (informational)",
+  "version": "0.1.0",
+  "assurance_class": "structural_draft",
+  "description": "Structural file/header gates for CRA Annex VII drafts, an Art 14 reporting-path file, and dependency hygiene — not essential-requirements conformity. Informational — not a conformity assessment.",
+  "jurisdiction": "EU",
+  "citations": [
+    {
+      "framework": "EU",
+      "instrument": "CRA",
+      "annex": "VII",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R2847"
+    }
+  ],
+  "rules": [
+    {
+      "id": "CRA-ANNEX-VII-RISK",
+      "severity": "high",
+      "type": "POLICY_VIOLATION",
+      "check": "annex_file",
+      "path": "docs/annex-vii/risk_assessment.md",
+      "min_bytes": 200,
+      "require_headers": ["# Risk Assessment", "## Product Overview", "## Identified Risks"],
+      "bind_repo_token": true,
+      "require_tree_paths": ["README.md"],
+      "description": "CRA Annex VII risk assessment draft missing, too short, or lacking required section headers.",
+      "remediation": "Populate docs/annex-vii/risk_assessment.md with product-specific risk models (no placeholders). Mention this product (package.json name, go.mod module, or repo directory name) and keep README.md present.",
+      "expected": "Risk assessment exceeds structural thresholds, contains required headers, and is bound to this repository.",
+      "settlement": "indicative",
+      "citations": [
+        {
+          "framework": "EU",
+          "instrument": "CRA",
+          "annex": "VII",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R2847"
+        }
+      ]
+    },
+    {
+      "id": "CRA-ANNEX-VII-SUPPORT",
+      "severity": "high",
+      "type": "POLICY_VIOLATION",
+      "check": "annex_file",
+      "path": "docs/annex-vii/support_period.md",
+      "min_bytes": 120,
+      "require_headers": ["# Support Period", "## End of Support"],
+      "bind_repo_token": true,
+      "description": "Support period rationale missing or incomplete.",
+      "remediation": "Declare a concrete product support period and rationale in docs/annex-vii/support_period.md. Mention this product (package.json name, go.mod module, or repo directory name).",
+      "expected": "Support period document present with End of Support section and repo-bound product mention.",
+      "settlement": "indicative",
+      "citations": [
+        {
+          "framework": "EU",
+          "instrument": "CRA",
+          "annex": "VII",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R2847"
+        }
+      ]
+    },
+    {
+      "id": "CRA-ANNEX-VII-MANUAL",
+      "severity": "medium",
+      "type": "POLICY_VIOLATION",
+      "check": "annex_file",
+      "path": "docs/annex-vii/user_manual_security.md",
+      "min_bytes": 150,
+      "require_headers": ["# User Manual — Security", "## Secure Configuration", "## Product Disposal"],
+      "bind_repo_token": true,
+      "description": "Security-relevant user manual sections missing.",
+      "remediation": "Add Secure Configuration and Product Disposal guidance. Mention this product (package.json name, go.mod module, or repo directory name).",
+      "expected": "User manual security sections present and bound to this repository.",
+      "settlement": "indicative",
+      "citations": [
+        {
+          "framework": "EU",
+          "instrument": "CRA",
+          "annex": "VII",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R2847"
+        }
+      ]
+    },
+    {
+      "id": "CRA-ART14-PATH",
+      "severity": "medium",
+      "type": "POLICY_VIOLATION",
+      "check": "annex_file",
+      "path": "docs/incident/art14-path.md",
+      "min_bytes": 200,
+      "require_headers": [
+        "# Art 14 reporting path",
+        "## Reporting clock (CRA Art 14)",
+        "## Handling clock (not this file)",
+        "## Named owner",
+        "## Rehearsal dated artifact"
+      ],
+      "bind_repo_token": true,
+      "description": "CRA Art 14 reporting path file missing, too short, or lacking required section headers. Structural file gate only — documents the path; does not mean tabletop rehearsed. Not a live SRP or EU Login check; not vulnerability-handling/SPOC evidence.",
+      "remediation": "Populate docs/incident/art14-path.md with this product's Art 14 reporting path (named owner + Drafted date). After you run a tabletop, record the date in `Last tabletop:`. Distinguish reporting (11 Sept 2026) from vulnerability-handling/public SPOC (later clock). Do not claim EU Login works. Mention this product (package.json name, go.mod module, or repo directory name).",
+      "expected": "Art 14 reporting path file present with required headers and a repo-bound product mention. Documented draft only — not a live SRP check; badge shows rehearsed only after human fills Last tabletop:.",
+      "settlement": "indicative",
+      "citations": [
+        {
+          "framework": "EU",
+          "instrument": "CRA",
+          "article": "14",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R2847",
+          "effective_from": "2026-09-11"
+        }
+      ]
+    },
+    {
+      "id": "CRA-ANTI-PLACEHOLDER",
+      "severity": "critical",
+      "type": "POLICY_VIOLATION",
+      "check": "anti_placeholder",
+      "paths": [
+        "docs/annex-vii/risk_assessment.md",
+        "docs/annex-vii/support_period.md",
+        "docs/annex-vii/user_manual_security.md",
+        "docs/incident/art14-path.md"
+      ],
+      "description": "Annex VII drafts or Art 14 path file contain placeholder / boilerplate text.",
+      "remediation": "Replace TODO / lorem ipsum / [insert ...] placeholders with real product content.",
+      "expected": "No placeholder patterns in Annex VII drafts or the Art 14 path file.",
+      "settlement": "indicative",
+      "citations": [
+        {
+          "framework": "EU",
+          "instrument": "CRA",
+          "annex": "VII",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R2847"
+        }
+      ]
+    },
+    {
+      "id": "CRA-DEP-AXIOS-PIN",
+      "severity": "critical",
+      "type": "SYS_TRACE_VIOLATION",
+      "check": "npm_dep_ban",
+      "package": "axios",
+      "banned_versions": ["1.6.0", "^1.6.0", "~1.6.0"],
+      "description": "Vulnerable axios@1.6.0 pin detected in package.json.",
+      "remediation": "Upgrade axios to a patched release (>=1.8.4 recommended) and refresh the lockfile.",
+      "expected": "Dependency tree free of listed unmitigated axios pins."
+    }
+  ]
+}
