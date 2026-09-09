@@ -9,9 +9,10 @@ frozen pack copies, claim maps, and fault-injection scripts.
 external_test/
   curbpack/
     packs/              # CURBPACK_PACKS_DIR — id/pack.json
-    fault_injection/    # one .sh per mutation, run from a Curbpack work clone
+    reset.sh setup.sh   # reset this checkout; apply one injection
+    fault_injection/    # one .sh per mutation
   ctam/                 # later
 ```
 
-Curbpack owns setup / test / teardown and the product pin.
-Scripts here only mutate. They do not call `curbpack` and do not declare pass/fail.
+Curbpack tests only invoke `reset.sh` / `setup.sh`. The scripts do not call
+`curbpack` and do not declare pass/fail.

@@ -11,8 +11,18 @@ curbpack check
 
 overrides the binary's embed. `.curbpack.json` is unchanged.
 
-`fault_injection/*.sh` are RF-02 mutations. Curbpack reset/setup runs them
-inside a work clone checked out at its pin. Do not run them on a checkout
-you are developing in.
+Reset, setup and `fault_injection/*.sh` live here so you can run them in
+this repository and watch the tree change:
+
+```bash
+cd external_test/curbpack
+make setup CASE=EV-002          # reset to main, then rm SECURITY.md
+# inspect the repo; run curbpack check if you want
+make reset                      # back to main
+```
+
+`reset.sh` / `setup.sh` take an optional ref (default `main`). Curbpack
+tests only call these scripts; they pass their frozen product pin as the ref.
+`reset.sh` discards uncommitted work in this checkout.
 
 These copies are not certification, CE marking, or a notified-body opinion.
