@@ -104,7 +104,7 @@ medtech-iec62304
 
 Pack JSON used for ordinary `check` still comes from the Curbpack binary
 (see `curbpack-ref.txt`). Frozen pack copies, claim maps, and runnable reset/setup scripts live in
-`external_test/curbpack/`. From that directory: `make setup CASE=EV-002` then
+`external_test/curbpack/`. From that directory: `make setup STATE=R2` then
 `make reset`. That mutates this checkout; it is how you watch a fault injection. Point
 `CURBPACK_PACKS_DIR` at `external_test/curbpack/packs` to evaluate those copies.
 

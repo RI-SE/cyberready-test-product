@@ -1,15 +1,3 @@
 #!/bin/sh
-# EV-003 — missing required section
-# Drop the Classification Rationale header so MD-SW-CLASS cannot pass.
-set -eu
-tmp=$(mktemp)
-trap 'rm -f "$tmp"' EXIT
-# portable: rewrite without the required header line
-while IFS= read -r line || [ -n "$line" ]; do
-  case "$line" in
-    "## Classification Rationale") continue ;;
-  esac
-  printf '%s\n' "$line"
-done < docs/medtech/software_safety_class.md > "$tmp"
-mv "$tmp" docs/medtech/software_safety_class.md
-trap - EXIT
+echo "fault_injection/EV-003.sh: use states/ (setup.sh R-id). EV-003 is a suite case, not a repository state." >&2
+exit 2

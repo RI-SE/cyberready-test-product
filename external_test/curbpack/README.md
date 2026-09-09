@@ -11,15 +11,19 @@ curbpack check
 
 overrides the binary's embed. `.curbpack.json` is unchanged.
 
-Reset, setup and `fault_injection/*.sh` live here so you can run them in
-this repository and watch the tree change:
+Named repository states **R1…Rn** are the setup interface (Test Procedures
+§3.1). Suite cases such as EV-002 *use* a state; they are not script names.
 
 ```bash
 cd external_test/curbpack
-make setup CASE=EV-002          # reset to main, then rm SECURITY.md
+make list                       # R1 R2 R3
+make setup STATE=R2             # reset to main, then missing SECURITY.md
 # inspect the repo; run curbpack check if you want
 make reset                      # back to main
 ```
+
+Registry: `states.md` + `states.list` + `states/<ID>.sh` — change all three
+together. `setup.sh` refuses unknown or duplicate R-ids.
 
 `reset.sh` / `setup.sh` take an optional ref (default `main`). Curbpack
 tests only call these scripts; they pass their frozen product pin as the ref.

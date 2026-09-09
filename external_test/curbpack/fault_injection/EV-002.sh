@@ -1,5 +1,3 @@
 #!/bin/sh
-# EV-002 — missing required file
-# Remove SECURITY.md so HOUSE-SECURITY-MD cannot pass.
-set -eu
-rm -f SECURITY.md
+echo "fault_injection/EV-002.sh: use states/ (setup.sh R-id). EV-002 is a suite case, not a repository state." >&2
+exit 2
