@@ -36,4 +36,4 @@ if [ ! -f "$script" ]; then
 fi
 "$here/reset.sh" "$ref"
 cd "$root"
-sh "$script"
+"$script"
