@@ -103,9 +103,10 @@ medtech-iec62304
 `medtech-iec62304` extends `cra-baseline`, so CRA Annex VII / Art 14 gates run through that pack. Do not also list `cra-baseline` unless you intend to name it twice; Compose already loads the base.
 
 Pack JSON used for ordinary `check` still comes from the Curbpack binary
-(see `curbpack-ref.txt`). Frozen pack copies, claim maps, and runnable reset/setup scripts live in
-`external_test/curbpack/`. From that directory: `./setup.sh R2` then
-`./reset.sh`. That mutates this checkout; it is how you watch a fault injection. Point
+(see `curbpack-ref.txt`). Frozen pack copies, claim maps, and R-state
+scripts live in `external_test/curbpack/`. A verification case sources the
+verification-run environment (which restores the disposable clone to
+`$REFERENCE_PRODUCT_COMMIT`), then runs `setup.sh` with an R-id. Point
 `CURBPACK_PACKS_DIR` at `external_test/curbpack/packs` to evaluate those copies.
 
 Use a labelled pre-beta binary that includes the merged hardening reference in

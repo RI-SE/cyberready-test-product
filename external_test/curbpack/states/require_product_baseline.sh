@@ -4,8 +4,8 @@
 # Not required here: CURBPACK_COMMIT, CURBPACK_ROOT, AS_OF_DATE,
 # CURBPACK_PACKS_DIR (Curbpack-side / pack / as-of; not an R-state input).
 #
-# The commit object must already exist in this clone. Origin fetch does not
-# see unpushed commits from another checkout.
+# The commit object must already exist in this clone. Setup does not fetch
+# or insert it.
 
 require_product_baseline() {
 	prefix=$1
@@ -24,7 +24,7 @@ require_product_baseline() {
 	fi
 	if ! expected=$(git rev-parse --verify "${REFERENCE_PRODUCT_COMMIT}^{commit}" 2>/dev/null); then
 		echo "$prefix: REFERENCE_PRODUCT_COMMIT is not a commit in this clone: $REFERENCE_PRODUCT_COMMIT" >&2
-		echo "$prefix: push the reference product (or otherwise insert that object) before setup in tmp/" >&2
+		echo "$prefix: the frozen commit must already exist in this clone" >&2
 		exit 1
 	fi
 	head=$(git rev-parse HEAD)

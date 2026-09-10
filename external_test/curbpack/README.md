@@ -20,28 +20,32 @@ overrides the binary's embed. `.curbpack.json` is unchanged.
 `setup.sh` accepts only IDs in `states.list`. Suite cases such as EV-002
 *use* a state; they are not script names.
 
-Source the Curbpack verification-run configuration first so
-`REFERENCE_PRODUCT_ROOT` and `REFERENCE_PRODUCT_COMMIT` are set. Run these
-scripts from this living checkout. They reset `$REFERENCE_PRODUCT_ROOT`
-(typically the tmp clone). The commit object must already exist in that
-clone; origin fetch does not see unpushed commits from this tree.
+Source the Curbpack verification-run configuration first. That restores
+`$REFERENCE_PRODUCT_ROOT` to exactly `$REFERENCE_PRODUCT_COMMIT`. Then run
+`setup.sh` from that frozen checkout. It requires a clean tree at that
+commit and only applies the requested R-state. It does not reset, fetch,
+or clean. The R-state scripts used are the scripts in that frozen commit.
+There is no supported living harness ahead of the pin. The next
+independent case sources the verification-run configuration again.
 
 ```bash
-cd /path/to/cyberready-test-product/external_test/curbpack
+source tmp/verification-run.sh    # from the Curbpack repo; restores the tmp clone
+cd "$REFERENCE_PRODUCT_ROOT/external_test/curbpack"
 ./setup.sh --list                 # R1 R2 R3
-./setup.sh R2                     # mutate the tmp clone (dirty)
-./setup.sh R2 --commit            # same mutation, local test_* branch there
-./reset.sh                        # tmp clone back to the recorded commit; test_* stay
+./setup.sh R2                     # mutate the frozen checkout (dirty)
+./setup.sh R2 --commit            # same mutation, local test_* branch
+# next independent case: source tmp/verification-run.sh again
 git -C "$REFERENCE_PRODUCT_ROOT" branch --list 'test_*'
 git -C "$REFERENCE_PRODUCT_ROOT" branch -D test_you_20260909_17500000001234
 ```
 
-`setup.sh` resets to `$REFERENCE_PRODUCT_COMMIT`. It does not take a commit
-argument. `--commit` creates `test_<user>_<YYYYMMDD>_<id>` and prints the
-name. It is local only: do not push it, do not merge it to `main`.
-`reset.sh` does not delete it. Use `--commit` when the case needs a recorded
-commit (EC-01). Leave the tree dirty when the case is a dirty working tree
-(EC-02). Do not use an uncommitted R2/R3 as a substitute for EC-02 on R1.
+`setup.sh` does not take a commit argument. `--commit` creates
+`test_<user>_<YYYYMMDD>_<id>` and prints the name. It is local only: do
+not push it, do not merge it to `main`. Local `test_*` branches remain
+until someone deletes them by hand. Use `--commit` when the case needs a
+recorded commit (EC-01). Leave the tree dirty when the case is a dirty
+working tree (EC-02). Do not use an uncommitted R2/R3 as a substitute for
+EC-02 on R1.
 
 Registry: `states.md` + `states.list` + `states/<ID>.sh` — change all three
 together. `setup.sh` refuses unknown or duplicate R-ids.

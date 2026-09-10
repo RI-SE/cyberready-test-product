@@ -1,15 +1,15 @@
 #!/bin/sh
-# Reset this checkout, then apply one named R-state.
+# Apply one named R-state to the frozen reference-product checkout.
 # Usage: setup.sh --list
 #        setup.sh <R-id> [--commit]
 #
-# The reset target is $REFERENCE_PRODUCT_COMMIT in $REFERENCE_PRODUCT_ROOT
-# from a sourced verification-run.sh. Do not pass a commit on the command
-# line. These scripts may live in a different checkout than the tmp clone
-# they reset (harness ahead of the pin). R-states are working-tree mutations
-# of that ref. --commit records the mutation on a local branch named
-# test_<user>_<YYYYMMDD>_<id>. Local only: do not push. reset.sh does not
-# delete it.
+# Precondition: this script is in $REFERENCE_PRODUCT_ROOT, HEAD is
+# exactly $REFERENCE_PRODUCT_COMMIT, and the working tree is clean.
+# Those values come from a sourced verification-run.sh. This script
+# does not restore, fetch, reset, or clean the checkout. Do not pass a
+# commit on the command line. R-state scripts are executed from this
+# frozen checkout. --commit records the mutation on a local branch
+# named test_<user>_<YYYYMMDD>_<id>. Local only: do not push.
 set -eu
 here=$(cd "$(dirname "$0")" && pwd)
 list=$here/states.list
@@ -42,7 +42,7 @@ for arg in "$@"; do
       else
         echo "setup.sh: unexpected argument $arg" >&2
         echo "usage: setup.sh <R-id> [--commit]" >&2
-        echo "reset target is REFERENCE_PRODUCT_COMMIT, not a CLI ref" >&2
+        echo "baseline is REFERENCE_PRODUCT_COMMIT, not a CLI ref" >&2
         exit 2
       fi
       ;;
@@ -71,7 +71,28 @@ if [ "$(git -C "$REFERENCE_PRODUCT_ROOT" rev-parse --is-inside-work-tree 2>/dev/
 fi
 root=$REFERENCE_PRODUCT_ROOT
 fixture_dir=$root/.git/curbpack-fixture
-ref=$REFERENCE_PRODUCT_COMMIT
+
+script_root=$(git -C "$here" rev-parse --show-toplevel)
+if [ "$script_root" != "$root" ]; then
+  echo "setup.sh: this script is in $script_root, but REFERENCE_PRODUCT_ROOT is $root" >&2
+  exit 2
+fi
+
+if ! expected=$(git -C "$root" rev-parse --verify "${REFERENCE_PRODUCT_COMMIT}^{commit}" 2>/dev/null); then
+  echo "setup.sh: REFERENCE_PRODUCT_COMMIT is not a commit in this clone: $REFERENCE_PRODUCT_COMMIT" >&2
+  exit 2
+fi
+head=$(git -C "$root" rev-parse HEAD)
+if [ "$head" != "$expected" ]; then
+  echo "setup.sh: HEAD is $head, but REFERENCE_PRODUCT_COMMIT is $expected" >&2
+  exit 2
+fi
+status=$(git -C "$root" status --porcelain)
+if [ -n "$status" ]; then
+  echo "setup.sh: reference-product working tree is not clean: $root" >&2
+  printf '%s\n' "$status" >&2
+  exit 2
+fi
 
 if ! grep -qx "$state" "$list"; then
   echo "setup.sh: unknown state $state (not in states.list)" >&2
@@ -89,23 +110,13 @@ if [ ! -f "$script" ]; then
   exit 2
 fi
 
-# Snapshot state scripts before reset --hard. Otherwise this invocation
-# would run the pin's copies and drop a harness that is ahead of the pin.
-states_tmp=$(mktemp -d)
-cleanup() { rm -rf "$states_tmp"; }
-trap cleanup EXIT
-cp -R "$here/states/." "$states_tmp/"
-script=$states_tmp/$state.sh
-chmod +x "$script" "$states_tmp"/*.sh 2>/dev/null || chmod +x "$script"
-
 echo "setup.sh: apply $state"
 printf '%-25s %s\n' \
   "Reference-product commit:" "$REFERENCE_PRODUCT_COMMIT" \
   "Reference-product root:" "$REFERENCE_PRODUCT_ROOT"
 
-"$here/reset.sh" "$ref"
 mkdir -p "$fixture_dir"
-printf '%s\n' "$ref" >"$fixture_dir/origin"
+printf '%s\n' "$expected" >"$fixture_dir/origin"
 printf '%s\n' "$state" >"$fixture_dir/state"
 
 cd "$root"

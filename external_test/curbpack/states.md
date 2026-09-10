@@ -6,9 +6,10 @@ This file is the live registry required by Curbpack
 state in `states.list`, `states/<ID>.sh` and this table together.
 
 Curbpack suite cases (EV-002, …) *use* these states; they are not the setup
-interface. The product ref is a living starting tree. Scripts mutate it.
+interface. Each independent case sources the verification-run environment
+(restoring the frozen checkout), then `setup.sh` applies the R-state.
 `--commit` records the mutation on a local `test_<user>_<date>_<id>` branch.
-`reset.sh` leaves that branch in place until someone deletes it by hand.
+Those branches remain until someone deletes them by hand.
 Do not push those branches. Do not merge them into `main`.
 
 | ID | Repository state | Seeded condition | Expected structural result | Used by |

@@ -1,6 +1,6 @@
 #!/bin/sh
 # R1 — starting Glucose Log product content (no extra mutation).
-# Verify the documented R1 fixture after reset. Not a general product check.
+# Verify the documented R1 fixture on the frozen baseline. Not a general product check.
 #
 # Keep the printed description in sync with curbpack
 # docs/testing/procedures/0_controlled_repo_setup.md (section R1).

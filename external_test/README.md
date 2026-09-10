@@ -11,9 +11,11 @@ external_test/
     packs/              # CURBPACK_PACKS_DIR — id/pack.json
     states.md           # live R-state registry (procedures §3.1)
     states/             # one script per R-id
-    reset.sh setup.sh   # setup.sh <R-id> [ref]
+    setup.sh            # setup.sh <R-id> [--commit]
+    reset.sh
   ctam/                 # later
 ```
 
-Curbpack tests only invoke `reset.sh` / `setup.sh` with an R-id.
-Suite cases (EV-002, …) live in the procedures document and *use* these states.
+A verification case sources the verification-run environment, then invokes
+`setup.sh` with an R-id (optionally `--commit`). Suite cases (EV-002, …)
+live in the procedures document and *use* these states.
