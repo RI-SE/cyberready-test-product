@@ -1,8 +1,10 @@
-# Product-side verification-run variables. Sourced by R1..Rn.
+# Product-side verification-run variables. Sourced by R1–R3 (mutations of
+# this checkout). R4 and R5 do not source this file: they build disposable
+# trees under $CURBPACK_ROOT/tmp from Curbpack testdata.
 #
 # Required: REFERENCE_PRODUCT_ROOT, REFERENCE_PRODUCT_COMMIT.
 # Not required here: CURBPACK_COMMIT, CURBPACK_ROOT, AS_OF_DATE,
-# CURBPACK_PACKS_DIR (Curbpack-side / pack / as-of; not an R-state input).
+# CURBPACK_PACKS_DIR (Curbpack-side / pack / as-of; not an R1–R3 input).
 #
 # The commit object must already exist in this clone. Setup does not fetch
 # or insert it.

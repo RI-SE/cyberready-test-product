@@ -1,8 +1,10 @@
 # Curbpack fixture for Glucose Log
 
 Glucose Log is a living product. Packs and application files change as
-Curbpack and CTAM gain capability. Named R-states are **script mutations**
-of a starting product ref, not commits on `main`.
+Curbpack and CTAM gain capability. Named R-states are the executable
+manifestation of the states Curbpack defines. R1–R3 are **script
+mutations** of a starting product ref, not commits on `main`. R4–R5
+build disposable trees from Curbpack testdata.
 
 Until pack-templates exist upstream, this product carries copies of the
 embedded Curbpack packs (`house-policy`, `cra-baseline`, `medtech-iec62304`)
@@ -21,19 +23,27 @@ overrides the binary's embed. `.curbpack.json` is unchanged.
 *use* a state; they are not script names.
 
 Source the Curbpack verification-run configuration first. That restores
-`$REFERENCE_PRODUCT_ROOT` to exactly `$REFERENCE_PRODUCT_COMMIT`. Then run
-`setup.sh` from that frozen checkout. It requires a clean tree at that
-commit and only applies the requested R-state. It does not reset, fetch,
-or clean. The R-state scripts used are the scripts in that frozen commit.
-There is no supported living harness ahead of the pin. The next
-independent case sources the verification-run configuration again.
+`$REFERENCE_PRODUCT_ROOT` to exactly `$REFERENCE_PRODUCT_COMMIT`. Then
+prepare the named R-state. The R-state scripts used are the scripts in
+that frozen commit. There is no supported living harness ahead of the
+pin. The next independent case sources the verification-run configuration
+again.
+
+R1–R3: run `setup.sh` from that frozen checkout. It requires a clean tree
+at that commit and only applies the requested R-state. It does not reset,
+fetch, or clean.
+
+R4–R5: run `states/R4.sh` or `states/R5.sh`. They read Curbpack testdata
+and write `$CURBPACK_ROOT/tmp/R4` or `tmp/R5`. They do not mutate this
+checkout. Do not use `--commit` for those states; the case records Git.
 
 ```bash
 source tmp/verification-run.sh    # from the Curbpack repo; restores the tmp clone
 cd "$REFERENCE_PRODUCT_ROOT/external_test/curbpack"
-./setup.sh --list                 # R1 R2 R3
+./setup.sh --list                 # R1 R2 R3 R4 R5
 ./setup.sh R2                     # mutate the frozen checkout (dirty)
 ./setup.sh R2 --commit            # same mutation, local test_* branch
+./states/R4.sh                    # recreate $CURBPACK_ROOT/tmp/R4 only
 # next independent case: source tmp/verification-run.sh again
 git -C "$REFERENCE_PRODUCT_ROOT" branch --list 'test_*'
 git -C "$REFERENCE_PRODUCT_ROOT" branch -D test_you_20260909_17500000001234
