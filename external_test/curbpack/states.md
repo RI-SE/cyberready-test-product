@@ -12,12 +12,14 @@ state in `states.list`, `states/<ID>.sh` and this table together.
 Curbpack suite cases (EV-002, …) *use* these states; they are not the setup
 interface. Each independent case sources the verification-run environment
 (restoring the frozen checkout), then prepares the named R-state.
-R1–R5: `setup.sh` applies the state to this checkout. `--commit` records
+R1–R7: `setup.sh` applies the state to this checkout. `--commit` records
 the mutation on a local `test_<user>_<date>_<id>` branch. Those branches
 remain until someone deletes them by hand. Do not push those branches.
 Do not merge them into `main`. R4 and R5 replace this checkout with
 demo-app based content from Curbpack testdata. They do not create
-`tmp/R4` or `tmp/R5`.
+`tmp/R4` or `tmp/R5`. R6 and R7 add dated fixture docs and commit them
+with the author metadata required by the fresh/owned checks; `--commit`
+then records an already-clean tree.
 
 | ID | Repository state | Seeded condition | Expected structural result | Used by |
 |---|---|---|---|---|
@@ -26,3 +28,5 @@ demo-app based content from Curbpack testdata. They do not create
 | R3 | R1 with heading `## Classification Rationale` removed from `docs/medtech/software_safety_class.md`; file remains, other content unchanged | Heading removed | `MD-SW-CLASS` does not pass | EV-003 (`setup.sh R3 --commit`) |
 | R4 | demo-app content with token-only honesty-eval `SECURITY.md` and `package.json` identifying `acme-widget` (Curbpack definition) | Curbpack `testdata/demo-app` + `testdata/honesty-eval/token-only/SECURITY.md` on this checkout; `package.json` name `acme-widget` | `HOUSE-ANTI-PLACEHOLDER` does not pass | EV-006 (`setup.sh R4 --commit`) |
 | R5 | demo-app content with thin rule-satisfying honesty-eval `SECURITY.md` and original demo-app `package.json` (Curbpack definition) | Curbpack `testdata/demo-app` + `testdata/honesty-eval/real/SECURITY.md` on this checkout; original demo-app `package.json` | house-policy structural pass; no substance claim | EV-009 (`setup.sh R5 --commit`) |
+| R6 | R1 plus stale `docs/review-log.md` and `docs/owned-policy.md` committed as `Owner <owner@example.com>` dated `2022-01-01T00:00:00Z` | Authored commit with old dates on those two paths | `FIX-FRESH-REVIEW` does not pass under `fresh-owned-test` | EV-007-G (`setup.sh R6 --commit`) |
+| R7 | R1 plus `docs/review-log.md` and `docs/owned-policy.md` committed as `Wrong Author <wrong@example.com>` dated `2026-09-13T12:00:00Z` | Authored commit with wrong author email on those two paths | `FIX-OWNED-POLICY` does not pass under `fresh-owned-test` | EV-007-H (`setup.sh R7 --commit`) |
