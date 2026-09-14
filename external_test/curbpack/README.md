@@ -17,6 +17,20 @@ curbpack check
 
 overrides the binary's embed. `.curbpack.json` is unchanged.
 
+Named pack inputs (`PF-*`) are finished files under `pf-fixtures/`. After
+the R-state, select one with `mutate_pack.sh`. The only argument is the
+PF-id. The script copies those files onto this checkout (`packs/` or
+`review-pack-input/`). It does not clone, commit, or export variables.
+
+```bash
+./setup.sh R1 --commit
+./mutate_pack.sh PF-03
+```
+
+PF-01 is the committed `packs/` set. PF-02 is reserved for a second
+product instance and is not implemented. The PF registry lives in Curbpack
+`docs/testing/procedures/1_pack_template_instantiation.md`.
+
 ## Repository states
 
 `setup.sh` accepts only IDs in `states.list`. Suite cases such as EV-002
