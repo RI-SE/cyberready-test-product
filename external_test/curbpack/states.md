@@ -12,18 +12,17 @@ state in `states.list`, `states/<ID>.sh` and this table together.
 Curbpack suite cases (EV-002, …) *use* these states; they are not the setup
 interface. Each independent case sources the verification-run environment
 (restoring the frozen checkout), then prepares the named R-state.
-R1–R3: `setup.sh` applies the state to this checkout. `--commit` records
+R1–R5: `setup.sh` applies the state to this checkout. `--commit` records
 the mutation on a local `test_<user>_<date>_<id>` branch. Those branches
 remain until someone deletes them by hand. Do not push those branches.
-Do not merge them into `main`.
-R4–R5: `states/R4.sh` and `states/R5.sh` create disposable trees under
-Curbpack `tmp/` from Curbpack testdata. They do not mutate this checkout.
-EC-01 for those states is the case's `git init` / commit, not `--commit`.
+Do not merge them into `main`. R4 and R5 replace this checkout with
+demo-app based content from Curbpack testdata. They do not create
+`tmp/R4` or `tmp/R5`.
 
 | ID | Repository state | Seeded condition | Expected structural result | Used by |
 |---|---|---|---|---|
 | R1 | Starting Glucose Log product content — no extra mutation | Required files present (`SECURITY.md`, `.well-known/security.txt`, `docs/annex-vii/risk_assessment.md`, `docs/annex-vii/support_period.md`, `docs/annex-vii/user_manual_security.md`, `docs/incident/art14-path.md`, `docs/medtech/software_safety_class.md`, `docs/medtech/soup_list.md`, `docs/medtech/problem_resolution.md`, `package.json`); heading `## Classification Rationale` present; `package.json` dependency maps empty and no banned axios pin | Selected pack instance completes with the predeclared clean result (no missing required file/section) | PK-001, EV-001, PV-001, RP-001, DT-001 |
 | R2 | R1 with `SECURITY.md` removed (absent, not empty); other R1 content unchanged | `SECURITY.md` removed | `HOUSE-SECURITY-MD` does not pass | EV-002 (`setup.sh R2 --commit`) |
 | R3 | R1 with heading `## Classification Rationale` removed from `docs/medtech/software_safety_class.md`; file remains, other content unchanged | Heading removed | `MD-SW-CLASS` does not pass | EV-003 (`setup.sh R3 --commit`) |
-| R4 | demo-app content with token-only honesty-eval `SECURITY.md` and `package.json` identifying `acme-widget` (Curbpack definition) | Curbpack `testdata/demo-app` + `testdata/honesty-eval/token-only/SECURITY.md`; target `$CURBPACK_ROOT/tmp/R4` | `HOUSE-ANTI-PLACEHOLDER` does not pass | EV-006 (`states/R4.sh`) |
-| R5 | demo-app content with thin rule-satisfying honesty-eval `SECURITY.md` and original demo-app `package.json` (Curbpack definition) | Curbpack `testdata/demo-app` + `testdata/honesty-eval/real/SECURITY.md`; target `$CURBPACK_ROOT/tmp/R5` | house-policy structural pass; no substance claim | EV-009 (`states/R5.sh`) |
+| R4 | demo-app content with token-only honesty-eval `SECURITY.md` and `package.json` identifying `acme-widget` (Curbpack definition) | Curbpack `testdata/demo-app` + `testdata/honesty-eval/token-only/SECURITY.md` on this checkout; `package.json` name `acme-widget` | `HOUSE-ANTI-PLACEHOLDER` does not pass | EV-006 (`setup.sh R4 --commit`) |
+| R5 | demo-app content with thin rule-satisfying honesty-eval `SECURITY.md` and original demo-app `package.json` (Curbpack definition) | Curbpack `testdata/demo-app` + `testdata/honesty-eval/real/SECURITY.md` on this checkout; original demo-app `package.json` | house-policy structural pass; no substance claim | EV-009 (`setup.sh R5 --commit`) |

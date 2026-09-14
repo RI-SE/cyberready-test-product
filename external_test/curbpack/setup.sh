@@ -1,7 +1,7 @@
 #!/bin/sh
-# Apply one named R-state. R1–R3 mutate this frozen checkout. R4–R5 run
-# the matching states/*.sh, which write disposable trees under
-# $CURBPACK_ROOT/tmp and do not mutate this checkout.
+# Apply one named R-state. Every states/<id>.sh prepares that state on
+# this frozen checkout ($REFERENCE_PRODUCT_ROOT). --commit records the
+# resulting tree. Do not pass a revision argument.
 # Usage: setup.sh --list
 #        setup.sh <R-id> [--commit]
 #
