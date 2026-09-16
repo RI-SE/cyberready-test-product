@@ -1,0 +1,4 @@
+{
+  "note": "Pack provenance different from the PF-01 / current Glucose Log recorded pack_versions, so review_freshness is stale. Not a Git artifact change.",
+  "pack_versions": "house-policy@9.9.9"
+}

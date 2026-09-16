@@ -2,9 +2,10 @@
 
 Glucose Log is a living product. Packs and application files change as
 Curbpack and CTAM gain capability. Named R-states are the executable
-manifestation of the states Curbpack defines. R1–R3 are **script
-mutations** of a starting product ref, not commits on `main`. R4–R5
-build disposable trees from Curbpack testdata.
+manifestation of the states Curbpack defines. R1–R3 and R8–R9 are
+**script mutations** of a starting product ref. R8 and R9 commit the
+`src/app.py` change on this checkout. R4–R5 build disposable trees from
+Curbpack testdata.
 
 Until pack-templates exist upstream, this product carries copies of the
 embedded Curbpack packs (`house-policy`, `cra-baseline`, `medtech-iec62304`)

@@ -1,6 +1,6 @@
-# Product-side verification-run variables. Sourced by R1–R3 (mutations of
-# this checkout). R4 and R5 do not source this file: they build disposable
-# trees under $CURBPACK_ROOT/tmp from Curbpack testdata.
+# Product-side verification-run variables. Sourced by R1–R3 and R8–R9
+# (mutations of this checkout). R4 and R5 do not source this file: they
+# build disposable trees under $CURBPACK_ROOT/tmp from Curbpack testdata.
 #
 # Required: REFERENCE_PRODUCT_ROOT, REFERENCE_PRODUCT_COMMIT.
 # Not required here: CURBPACK_COMMIT, CURBPACK_ROOT, AS_OF_DATE,

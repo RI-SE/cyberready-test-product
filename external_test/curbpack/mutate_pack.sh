@@ -2,9 +2,10 @@
 # Install one named pack input (PF-*) onto this disposable checkout.
 # Usage: mutate_pack.sh <PF-id>
 #
-# Precondition: source verification-run.sh first. This script lives in
-# $REFERENCE_PRODUCT_ROOT and only copies finished fixture files. It does
-# not clone, select a revision, create a branch, stage, or commit.
+# Precondition: REFERENCE_PRODUCT_ROOT is this checkout. This script
+# lives in $REFERENCE_PRODUCT_ROOT and only copies finished fixture files.
+# It does not clone, select a revision, create a branch, stage, or commit.
+# It does not require CURBPACK_ROOT or a Curbpack tmp/ path.
 # PF-02 is reserved and is not implemented.
 set -eu
 here=$(cd "$(dirname "$0")" && pwd)
@@ -20,18 +21,8 @@ fi
 
 id=$1
 
-if [ -z "${CURBPACK_ROOT:-}" ]; then
-  echo "mutate_pack.sh: CURBPACK_ROOT is empty; source verification-run.sh first" >&2
-  exit 2
-fi
 if [ -z "${REFERENCE_PRODUCT_ROOT:-}" ]; then
   echo "mutate_pack.sh: REFERENCE_PRODUCT_ROOT is empty; source verification-run.sh first" >&2
-  exit 2
-fi
-
-expected=$CURBPACK_ROOT/tmp/cyberready-test-product
-if [ "$REFERENCE_PRODUCT_ROOT" != "$expected" ]; then
-  echo "mutate_pack.sh: REFERENCE_PRODUCT_ROOT is not the disposable checkout $expected" >&2
   exit 2
 fi
 if [ "$(git -C "$REFERENCE_PRODUCT_ROOT" rev-parse --is-inside-work-tree 2>/dev/null)" != "true" ]; then
@@ -241,6 +232,13 @@ case $id in
     echo "mutate_pack.sh: PF-17"
     echo "installed:"
     echo "  pf-fixtures/PF-17/house-policy/pack.json -> external_test/curbpack/packs/house-policy/pack.json"
+    ;;
+  PF-18)
+    require_file "$fixtures/PF-18/context-pack.json"
+    cp "$fixtures/PF-18/context-pack.json" "$here/context-pack.json"
+    echo "mutate_pack.sh: PF-18"
+    echo "installed:"
+    echo "  pf-fixtures/PF-18/context-pack.json -> external_test/curbpack/context-pack.json"
     ;;
   *)
     echo "mutate_pack.sh: unknown PF id $id" >&2
