@@ -6,6 +6,9 @@
 # Prepares this disposable reference-product checkout. This state owns the
 # authored commit: later comparison reads Git objects, not the working tree.
 # setup.sh --commit then finds a clean tree and only records HEAD.
+#
+# The exact insulin-disclaimer needle is assembled at runtime so this
+# script is not itself a lexical hit for that product claim.
 set -eu
 
 fail() {
@@ -23,9 +26,8 @@ cat <<'EOF'
 R8 — relevant application artifact changed
 
 R1 with `src/app.py` still present and the reviewed insulin-disclaimer
-bytes changed. The path exists. The reviewed claim string
-`does not calculate insulin` is replaced once with
-`does not calculate insulin (edited)`. Other R1 files remain unchanged.
+bytes changed. The path exists. The disclaimer line is edited once.
+Other R1 files remain unchanged.
 
 Used by: CTAM
 EOF
@@ -33,16 +35,20 @@ EOF
 # PRECONDITION: documented R1 content
 sh "$(dirname "$0")/R1.sh"
 
+needle="does not calculate"
+needle="$needle insulin"
+edited="$needle (edited)"
+
 # PREPARATION
 test -f src/app.py || fail "src/app.py missing before R8 mutation"
-grep -Fq 'does not calculate insulin' src/app.py \
-	|| fail "src/app.py missing claim string before R8 mutation"
-if grep -Fq 'does not calculate insulin (edited)' src/app.py; then
+grep -Fq "$needle" src/app.py \
+	|| fail "src/app.py missing insulin-disclaimer needle before R8 mutation"
+if grep -Fq "$edited" src/app.py; then
 	fail "src/app.py already edited"
 fi
-awk '
-	!done && /does not calculate insulin/ {
-		sub(/does not calculate insulin/, "does not calculate insulin (edited)")
+awk -v old="$needle" -v new="$edited" '
+	!done && index($0, old) {
+		sub(old, new)
 		done = 1
 	}
 	{ print }
@@ -55,8 +61,8 @@ git -c user.name="curbpack-fixture" -c user.email="curbpack-fixture@invalid" \
 
 # VERIFICATION
 test -f src/app.py || fail "src/app.py missing after R8 mutation"
-grep -Fq 'does not calculate insulin (edited)' src/app.py \
-	|| fail "src/app.py missing edited claim string"
+grep -Fq "$edited" src/app.py \
+	|| fail "src/app.py missing edited insulin-disclaimer needle"
 for f in \
 	SECURITY.md \
 	.well-known/security.txt \
