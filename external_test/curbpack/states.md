@@ -1,4 +1,4 @@
-# Repository states (R1…Rn)
+# Repository states (R1…R7)
 
 This file is the live registry of **scripts** that implement the R-states
 defined by Curbpack
@@ -6,22 +6,22 @@ defined by Curbpack
 Curbpack defines what each R-id means. These scripts are the executable
 manifestation. Do not change a state's meaning here.
 
-`setup.sh` accepts only IDs listed in `states.list`. Add, remove or change a
-state in `states.list`, `states/<ID>.sh` and this table together.
+`setup.sh` applies `$tree/states/<ID>.sh` under `external_test/$SUT`
+(`SUT` defaults to `curbpack`). A missing script is an error. R-ids are
+unique across the curbpack and ctam trees. CTAM-owned states are listed
+in `external_test/ctam/states.md`.
 
 Curbpack suite cases (EV-002, …) *use* these states; they are not the setup
 interface. Each independent case sources the verification-run environment
 (restoring the frozen checkout), then prepares the named R-state.
-R1–R9: `setup.sh` applies the state to this checkout. `--commit` records
+R1–R7: `setup.sh` applies the state to this checkout. `--commit` records
 the mutation on a local `test_<user>_<date>_<id>` branch. Those branches
 remain until someone deletes them by hand. Do not push those branches.
 Do not merge them into `main`. R4 and R5 replace this checkout with
 demo-app based content from Curbpack testdata. They do not create
 `tmp/R4` or `tmp/R5`. R6 and R7 add dated fixture docs and commit them
 with the author metadata required by the fresh/owned checks; `--commit`
-then records an already-clean tree. R8 and R9 change or remove
-`src/app.py` and commit that tree; `--commit` then records an
-already-clean tree.
+then records an already-clean tree.
 
 | ID | Repository state | Seeded condition | Expected structural result | Used by |
 |---|---|---|---|---|
@@ -32,5 +32,3 @@ already-clean tree.
 | R5 | demo-app content with thin rule-satisfying honesty-eval `SECURITY.md` and original demo-app `package.json` (Curbpack definition) | Curbpack `testdata/demo-app` + `testdata/honesty-eval/real/SECURITY.md` on this checkout; original demo-app `package.json` | house-policy structural pass; no substance claim | Curbpack |
 | R6 | R1 plus stale `docs/review-log.md` and `docs/owned-policy.md` committed as `Owner <owner@example.com>` dated `2022-01-01T00:00:00Z` | Authored commit with old dates on those two paths | `FIX-FRESH-REVIEW` does not pass under `fresh-owned-test` | Curbpack |
 | R7 | R1 plus `docs/review-log.md` and `docs/owned-policy.md` committed as `Wrong Author <wrong@example.com>` dated `2026-09-13T12:00:00Z` | Authored commit with wrong author email on those two paths | `FIX-OWNED-POLICY` does not pass under `fresh-owned-test` | Curbpack |
-| R8 | R1 with reviewed `src/app.py` insulin-disclaimer bytes changed; path remains | `src/app.py` committed with the disclaimer line edited once | Git artifact bytes differ; path still present | CTAM |
-| R9 | R1 with `src/app.py` removed (absent, not empty); other R1 content unchanged | `src/app.py` removed | Git path/span absent at the comparison commit | CTAM |

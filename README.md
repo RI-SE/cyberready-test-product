@@ -103,8 +103,11 @@ medtech-iec62304
 `medtech-iec62304` extends `cra-baseline`, so CRA Annex VII / Art 14 gates run through that pack. Do not also list `cra-baseline` unless you intend to name it twice; Compose already loads the base.
 
 Pack JSON used for ordinary `check` still comes from the Curbpack binary
-(see `curbpack-ref.txt`). Frozen pack copies, claim maps, and R-state
-scripts live in `external_test/curbpack/`. A verification case sources the
+(see `curbpack-ref.txt`). Frozen pack copies, claim maps, and Curbpack
+R-state scripts live in `external_test/curbpack/`. That tree is the base.
+CTAM reuses those R/P ids and adds its own states under
+`external_test/ctam/`, applied with `SUT=ctam` through the same
+`setup.sh` / `mutate_pack.sh`. A verification case sources the
 verification-run environment (which restores the disposable clone to
 `$REFERENCE_PRODUCT_COMMIT`), then runs `setup.sh` with an R-id. Point
 `CURBPACK_PACKS_DIR` at `external_test/curbpack/packs` to evaluate those copies.

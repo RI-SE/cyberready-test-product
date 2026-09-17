@@ -1,7 +1,7 @@
 #!/bin/sh
 # R9 — relevant application artifact missing.
-# Keep the printed description in sync with curbpack
-# docs/testing/procedures/0_controlled_repo_setup.md (section R9).
+# Keep the printed description in sync with CTAM
+# docs/testing/procedures.md (section R9).
 #
 # Prepares this disposable reference-product checkout. This state owns the
 # authored commit: later comparison reads Git objects, not the working tree.
@@ -13,7 +13,7 @@ fail() {
 	exit 1
 }
 
-. "$(dirname "$0")/require_product_baseline.sh"
+. "$REFERENCE_PRODUCT_ROOT/external_test/curbpack/states/require_product_baseline.sh"
 require_product_baseline R9
 
 CURBPACK_R_STATE=R9
@@ -29,13 +29,13 @@ Used by: CTAM
 EOF
 
 # PRECONDITION: documented R1 content
-sh "$(dirname "$0")/R1.sh"
+sh "$REFERENCE_PRODUCT_ROOT/external_test/curbpack/states/R1.sh"
 
 # PREPARATION
 test -f src/app.py || fail "src/app.py missing before R9 mutation"
 git rm -q src/app.py
 git -c user.name="curbpack-fixture" -c user.email="curbpack-fixture@invalid" \
-	commit -m 'curbpack fixture R9 removed src/app.py' -q
+	commit -m 'ctam fixture R9 removed src/app.py' -q
 
 # VERIFICATION
 if [ -e src/app.py ]; then

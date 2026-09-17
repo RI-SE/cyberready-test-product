@@ -2,10 +2,11 @@
 
 Glucose Log is a living product. Packs and application files change as
 Curbpack and CTAM gain capability. Named R-states are the executable
-manifestation of the states Curbpack defines. R1–R3 and R8–R9 are
-**script mutations** of a starting product ref. R8 and R9 commit the
-`src/app.py` change on this checkout. R4–R5 build disposable trees from
-Curbpack testdata.
+manifestation of the states Curbpack defines. R1–R3 are **script
+mutations** of a starting product ref. R4–R5 build disposable trees from
+Curbpack testdata. CTAM-owned states (R8, R9, PF-18) live under
+`external_test/ctam/` and are applied with `SUT=ctam` through this
+directory's `setup.sh` / `mutate_pack.sh`.
 
 Until pack-templates exist upstream, this product carries copies of the
 embedded Curbpack packs (`house-policy`, `cra-baseline`, `medtech-iec62304`)
@@ -34,7 +35,8 @@ product instance and is not implemented. The PF registry lives in Curbpack
 
 ## Repository states
 
-`setup.sh` accepts only IDs in `states.list`. Suite cases such as EV-002
+`setup.sh` runs `external_test/$SUT/states/<ID>.sh`. `SUT` defaults to
+`curbpack`. A missing script is an error. Suite cases such as EV-002
 *use* a state; they are not script names.
 
 Source the Curbpack verification-run configuration first. That restores
@@ -55,7 +57,7 @@ checkout. Do not use `--commit` for those states; the case records Git.
 ```bash
 source tmp/verification-run.sh    # from the Curbpack repo; restores the tmp clone
 cd "$REFERENCE_PRODUCT_ROOT/external_test/curbpack"
-./setup.sh --list                 # R1 R2 R3 R4 R5
+./setup.sh --list                 # R1 … R7 in this tree
 ./setup.sh R2                     # mutate the frozen checkout (dirty)
 ./setup.sh R2 --commit            # same mutation, local test_* branch
 ./states/R4.sh                    # recreate $CURBPACK_ROOT/tmp/R4 only
@@ -72,7 +74,7 @@ recorded commit (EC-01). Leave the tree dirty when the case is a dirty
 working tree (EC-02). Do not use an uncommitted R2/R3 as a substitute for
 EC-02 on R1.
 
-Registry: `states.md` + `states.list` + `states/<ID>.sh` — change all three
-together. `setup.sh` refuses unknown or duplicate R-ids.
+Registry: `states.md` + `states/<ID>.sh`. `setup.sh` fails if the script
+file is missing.
 
 These copies are not certification, CE marking, or a notified-body opinion.
