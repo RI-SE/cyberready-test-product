@@ -49,15 +49,24 @@ packs=$tree/packs
 review_in=$tree/review-pack-input
 
 if [ "$sut" = ctam ]; then
+  installed=0
+  echo "mutate_pack.sh: $id"
+  echo "installed:"
   if [ -f "$fixtures/$id/context-pack.json" ]; then
     cp "$fixtures/$id/context-pack.json" "$tree/context-pack.json"
-    echo "mutate_pack.sh: $id"
-    echo "installed:"
     echo "  pf-fixtures/$id/context-pack.json -> external_test/ctam/context-pack.json"
-    exit 0
+    installed=1
   fi
-  echo "mutate_pack.sh: missing fixture $fixtures/$id/context-pack.json" >&2
-  exit 2
+  if [ -f "$fixtures/$id/buyer-questions.json" ]; then
+    cp "$fixtures/$id/buyer-questions.json" "$tree/buyer-questions.json"
+    echo "  pf-fixtures/$id/buyer-questions.json -> external_test/ctam/buyer-questions.json"
+    installed=1
+  fi
+  if [ "$installed" -eq 0 ]; then
+    echo "mutate_pack.sh: missing fixture $fixtures/$id/context-pack.json or buyer-questions.json" >&2
+    exit 2
+  fi
+  exit 0
 fi
 
 require_file() {

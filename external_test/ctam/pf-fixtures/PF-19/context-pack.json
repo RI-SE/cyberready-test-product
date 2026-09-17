@@ -1,0 +1,4 @@
+{
+  "note": "PF-19 does not change pack provenance. Git artifact freshness is unchanged. Residual exposure is buyer-questions.json.",
+  "pack_versions": "house-policy@0.1.0,medtech-iec62304@0.2.0"
+}

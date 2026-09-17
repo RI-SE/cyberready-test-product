@@ -1,0 +1,9 @@
+{
+  "note": "CTAM residual buyer question. Curbpack does not settle the insulin-disclaimer span; Answered stays false. Not a house-policy GateID.",
+  "questions": [
+    {
+      "gate_id": "CTAM-RESIDUAL-INSULIN",
+      "answered": false
+    }
+  ]
+}
