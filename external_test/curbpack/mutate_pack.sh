@@ -2,6 +2,9 @@
 # Install one named pack input (PF-*) onto this disposable checkout.
 # Usage: mutate_pack.sh <PF-id>
 #
+# SUT selects the fixture tree under external_test/ (curbpack default,
+# or ctam). It is the product that owns the named pack input, not a CLI flag.
+#
 # Precondition: REFERENCE_PRODUCT_ROOT is this checkout. This script
 # lives in $REFERENCE_PRODUCT_ROOT and only copies finished fixture files.
 # It does not clone, select a revision, create a branch, stage, or commit.
@@ -9,9 +12,6 @@
 # PF-02 is reserved and is not implemented.
 set -eu
 here=$(cd "$(dirname "$0")" && pwd)
-fixtures=$here/pf-fixtures
-packs=$here/packs
-review_in=$here/review-pack-input
 
 if [ $# -ne 1 ]; then
   echo "mutate_pack.sh: exactly one PF-id argument is required" >&2
@@ -32,6 +32,31 @@ fi
 root=$(git -C "$here" rev-parse --show-toplevel)
 if [ "$root" != "$REFERENCE_PRODUCT_ROOT" ]; then
   echo "mutate_pack.sh: this script is in $root, but REFERENCE_PRODUCT_ROOT is $REFERENCE_PRODUCT_ROOT" >&2
+  exit 2
+fi
+
+sut=${SUT:-curbpack}
+case $sut in
+  curbpack|ctam) ;;
+  *)
+    echo "mutate_pack.sh: SUT must be curbpack or ctam (got $sut)" >&2
+    exit 2
+    ;;
+esac
+tree=$root/external_test/$sut
+fixtures=$tree/pf-fixtures
+packs=$tree/packs
+review_in=$tree/review-pack-input
+
+if [ "$sut" = ctam ]; then
+  if [ -f "$fixtures/$id/context-pack.json" ]; then
+    cp "$fixtures/$id/context-pack.json" "$tree/context-pack.json"
+    echo "mutate_pack.sh: $id"
+    echo "installed:"
+    echo "  pf-fixtures/$id/context-pack.json -> external_test/ctam/context-pack.json"
+    exit 0
+  fi
+  echo "mutate_pack.sh: missing fixture $fixtures/$id/context-pack.json" >&2
   exit 2
 fi
 
@@ -233,15 +258,8 @@ case $id in
     echo "installed:"
     echo "  pf-fixtures/PF-17/house-policy/pack.json -> external_test/curbpack/packs/house-policy/pack.json"
     ;;
-  PF-18)
-    require_file "$fixtures/PF-18/context-pack.json"
-    cp "$fixtures/PF-18/context-pack.json" "$here/context-pack.json"
-    echo "mutate_pack.sh: PF-18"
-    echo "installed:"
-    echo "  pf-fixtures/PF-18/context-pack.json -> external_test/curbpack/context-pack.json"
-    ;;
   *)
-    echo "mutate_pack.sh: unknown PF id $id" >&2
+    echo "mutate_pack.sh: missing fixture $fixtures/$id" >&2
     echo "usage: mutate_pack.sh <PF-id>" >&2
     exit 2
     ;;

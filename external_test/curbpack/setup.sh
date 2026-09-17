@@ -5,6 +5,9 @@
 # Usage: setup.sh --list
 #        setup.sh <R-id> [--commit]
 #
+# SUT selects the fixture tree under external_test/ (curbpack default,
+# or ctam). It is the product that owns the named state, not a CLI flag.
+#
 # Precondition: this script is in $REFERENCE_PRODUCT_ROOT, HEAD is
 # exactly $REFERENCE_PRODUCT_COMMIT, and the working tree is clean.
 # Those values come from a sourced verification-run.sh. This script
@@ -14,14 +17,32 @@
 # named test_<user>_<YYYYMMDD>_<id>. Local only: do not push.
 set -eu
 here=$(cd "$(dirname "$0")" && pwd)
-list=$here/states.list
+
+sut=${SUT:-curbpack}
+case $sut in
+  curbpack|ctam) ;;
+  *)
+    echo "setup.sh: SUT must be curbpack or ctam (got $sut)" >&2
+    exit 2
+    ;;
+esac
+
+product_root=$(git -C "$here" rev-parse --show-toplevel)
+tree=$product_root/external_test/$sut
+
+list_states() {
+  for f in "$tree/states"/R*.sh; do
+    [ -f "$f" ] || continue
+    basename "$f" .sh
+  done
+}
 
 if [ "${1:-}" = "--list" ]; then
   if [ $# -ne 1 ]; then
     echo "setup.sh: --list cannot be combined with other arguments" >&2
     exit 2
   fi
-  cat "$list"
+  list_states
   exit 0
 fi
 
@@ -55,7 +76,7 @@ if [ -z "$state" ]; then
   echo "usage: setup.sh <R-id> [--commit]" >&2
   echo "       setup.sh --list" >&2
   echo "known states:" >&2
-  cat "$list" >&2
+  list_states >&2
   exit 2
 fi
 
@@ -73,6 +94,7 @@ if [ "$(git -C "$REFERENCE_PRODUCT_ROOT" rev-parse --is-inside-work-tree 2>/dev/
 fi
 root=$REFERENCE_PRODUCT_ROOT
 fixture_dir=$root/.git/curbpack-fixture
+tree=$root/external_test/$sut
 
 script_root=$(git -C "$here" rev-parse --show-toplevel)
 if [ "$script_root" != "$root" ]; then
@@ -96,17 +118,7 @@ if [ -n "$status" ]; then
   exit 2
 fi
 
-if ! grep -qx "$state" "$list"; then
-  echo "setup.sh: unknown state $state (not in states.list)" >&2
-  exit 2
-fi
-dup=$(sort "$list" | uniq -d)
-if [ -n "$dup" ]; then
-  echo "setup.sh: duplicate state id in states.list:" >&2
-  printf '%s\n' "$dup" >&2
-  exit 2
-fi
-script=$here/states/$state.sh
+script=$tree/states/$state.sh
 if [ ! -f "$script" ]; then
   echo "setup.sh: missing $script" >&2
   exit 2
@@ -115,7 +127,8 @@ fi
 echo "setup.sh: apply $state"
 printf '%-25s %s\n' \
   "Reference-product commit:" "$REFERENCE_PRODUCT_COMMIT" \
-  "Reference-product root:" "$REFERENCE_PRODUCT_ROOT"
+  "Reference-product root:" "$REFERENCE_PRODUCT_ROOT" \
+  "SUT:" "$sut"
 
 mkdir -p "$fixture_dir"
 printf '%s\n' "$expected" >"$fixture_dir/origin"
