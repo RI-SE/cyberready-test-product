@@ -1,0 +1,4 @@
+source_repo: ../curbpack
+source_commit: 9be3c1ea2f58a7ea74154d94e9e74b5ecee7d9ba
+copied: 2026-09-09
+note: fixture copies for glucose-log until pack-templates exist. Same ids so CURBPACK_PACKS_DIR overrides embed.
