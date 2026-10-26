@@ -1,0 +1,24 @@
+REF-01 run record
+Studio docs/testing argv (packs path is this fixture):
+  python3 -m checks --repo <product-root> --packs <product-root>/external_test/curbpack-studio/packs --out <product-root>/run-result.json
+(Run from a Curbpack Studio checkout so python3 -m checks resolves.)
+
+Product commit at setup: f751ffeb097cf79364426dbd3739fd4bde79ae1c
+Studio packs SOURCE commit string: b07b8deb9fed331b493241251087ce7ce648f5e4
+Observed suite stdout line: claims 7 exit 0
+Observed process exit: 0
+
+Carried cases from plan/TST-01.md (count 7):
+id	R	PF	expected_exit	observed_exit	claim_status
+CRA-ANNEX-VII-MANUAL	R1	PF-01	0	0	pass
+CRA-ANNEX-VII-RISK	R1	PF-01	0	0	pass
+CRA-ANNEX-VII-SUPPORT	R1	PF-01	0	0	pass
+CRA-ART14-PATH	R1	PF-01	0	0	pass
+HOUSE-ANTI-PLACEHOLDER	R1	PF-01	0	0	pass
+HOUSE-SECURITY-MD	R1	PF-01	0	0	pass
+HOUSE-SECURITY-TXT	R1	PF-01	0	0	pass
+
+Carried-case count: 7
+Expected equals observed for every carried id: yes
+diff -rq packs/{cra-baseline,house-policy,medtech-iec62304} vs Studio docs/reference/test-packs: empty
+states/R1.sh through R7.sh vs external_test/curbpack/states: identical
