@@ -18,11 +18,11 @@
 set -eu
 here=$(cd "$(dirname "$0")" && pwd)
 
-sut=${SUT:-curbpack-studio}
+sut=${SUT:-curbpack}
 case $sut in
-  curbpack|ctam|curbpack-studio) ;;
+  curbpack|ctam) ;;
   *)
-    echo "setup.sh: SUT must be curbpack, ctam, or curbpack-studio (got $sut)" >&2
+    echo "setup.sh: SUT must be curbpack or ctam (got $sut)" >&2
     exit 2
     ;;
 esac

@@ -1,80 +1,56 @@
-# Curbpack fixture for Glucose Log
+# Curbpack Studio fixture for Glucose Log
 
-Glucose Log is a living product. Packs and application files change as
-Curbpack and CTAM gain capability. Named R-states are the executable
-manifestation of the states Curbpack defines. R1–R3 are **script
-mutations** of a starting product ref. R4–R5 build disposable trees from
-Curbpack testdata. CTAM-owned states (R8, R9, PF-18) live under
-`external_test/ctam/` and are applied with `SUT=ctam` through this
-directory's `setup.sh` / `mutate_pack.sh`.
+This tree is the Studio external-test fixture. Packs under `packs/` are
+Packs v2 copies of the three test packs from Curbpack Studio
+`docs/reference/test-packs/`. Claim files live in `claims/`, not inside
+`packs/<id>/`.
 
-Until pack-templates exist upstream, this product carries copies of the
-embedded Curbpack packs (`house-policy`, `cra-baseline`, `medtech-iec62304`)
-plus a claim map for each pack. Same pack ids, so:
+Run curbcheck from a Studio checkout (or any environment where
+`python3 -m checks` is available):
 
 ```bash
-export CURBPACK_PACKS_DIR="$PWD/external_test/curbpack/packs"
-curbpack check
+# In the product repository root, after the R-state is prepared:
+printf '%s\n' '{"packs":["cra-baseline","house-policy","medtech-iec62304"]}' > curbpack.json
+mkdir -p claims
+cp external_test/curbpack-studio/claims/CRA-ANNEX-VII-MANUAL.json \
+   external_test/curbpack-studio/claims/CRA-ANNEX-VII-RISK.json \
+   external_test/curbpack-studio/claims/CRA-ANNEX-VII-SUPPORT.json \
+   external_test/curbpack-studio/claims/CRA-ART14-PATH.json \
+   external_test/curbpack-studio/claims/HOUSE-ANTI-PLACEHOLDER.json \
+   external_test/curbpack-studio/claims/HOUSE-SECURITY-MD.json \
+   external_test/curbpack-studio/claims/HOUSE-SECURITY-TXT.json \
+   claims/
+python3 -m checks \
+  --repo "$PWD" \
+  --packs "$PWD/external_test/curbpack-studio/packs" \
+  --out "$PWD/run-result.json"
 ```
 
-overrides the binary's embed. `.curbpack.json` is unchanged.
-
-Named pack inputs (`PF-*`) are finished files under `pf-fixtures/`. After
-the R-state, select one with `mutate_pack.sh`. The only argument is the
-PF-id. The script copies those files onto this checkout (`packs/` or
-`review-pack-input/`). It does not clone, commit, or export variables.
-
-```bash
-./setup.sh R1 --commit
-./mutate_pack.sh PF-03
-```
-
-PF-01 is the committed `packs/` set. PF-02 is reserved for a second
-product instance and is not implemented. The PF registry lives in Curbpack
-`docs/testing/procedures/1_pack_template_instantiation.md`.
+Do not export `CURBPACK_PACKS_DIR`. Do not run `curbpack check`. Do not
+select this SUT with `.curbpack.json`. The product selection file is
+`curbpack.json`.
 
 ## Repository states
 
-`setup.sh` runs `external_test/$SUT/states/<ID>.sh`. `SUT` defaults to
-`curbpack`. A missing script is an error. Suite cases such as EV-002
-*use* a state; they are not script names.
-
-Source the Curbpack verification-run configuration first. That restores
-`$REFERENCE_PRODUCT_ROOT` to exactly `$REFERENCE_PRODUCT_COMMIT`. Then
-prepare the named R-state. The R-state scripts used are the scripts in
-that frozen commit. There is no supported living harness ahead of the
-pin. The next independent case sources the verification-run configuration
-again.
-
-R1–R3: run `setup.sh` from that frozen checkout. It requires a clean tree
-at that commit and only applies the requested R-state. It does not reset,
-fetch, or clean.
-
-R4–R5: run `states/R4.sh` or `states/R5.sh`. They read Curbpack testdata
-and write `$CURBPACK_ROOT/tmp/R4` or `tmp/R5`. They do not mutate this
-checkout. Do not use `--commit` for those states; the case records Git.
+`setup.sh` runs `external_test/$SUT/states/<ID>.sh`. For this fixture set
+`SUT=curbpack-studio` (or run `./setup.sh` from this directory after
+exporting that value). `SUT` defaults in the script to `curbpack` when
+unset; use this tree explicitly for Studio.
 
 ```bash
-source tmp/verification-run.sh    # from the Curbpack repo; restores the tmp clone
-cd "$REFERENCE_PRODUCT_ROOT/external_test/curbpack"
-./setup.sh --list                 # R1 … R7 in this tree
-./setup.sh R2                     # mutate the frozen checkout (dirty)
-./setup.sh R2 --commit            # same mutation, local test_* branch
-./states/R4.sh                    # recreate $CURBPACK_ROOT/tmp/R4 only
-# next independent case: source tmp/verification-run.sh again
-git -C "$REFERENCE_PRODUCT_ROOT" branch --list 'test_*'
-git -C "$REFERENCE_PRODUCT_ROOT" branch -D test_you_20260909_17500000001234
+export REFERENCE_PRODUCT_ROOT=/path/to/cyberready-test-product
+export REFERENCE_PRODUCT_COMMIT=<pin>
+# tree must be clean at that commit before setup.sh
+cd "$REFERENCE_PRODUCT_ROOT/external_test/curbpack-studio"
+SUT=curbpack-studio ./setup.sh R1 --commit
 ```
 
-`setup.sh` does not take a commit argument. `--commit` creates
-`test_<user>_<YYYYMMDD>_<id>` and prints the name. It is local only: do
-not push it, do not merge it to `main`. Local `test_*` branches remain
-until someone deletes them by hand. Use `--commit` when the case needs a
-recorded commit (EC-01). Leave the tree dirty when the case is a dirty
-working tree (EC-02). Do not use an uncommitted R2/R3 as a substitute for
-EC-02 on R1.
+Named pack inputs (`PF-*`) are finished files under `pf-fixtures/`.
+`mutate_pack.sh` selects a PF-id and copies those files onto this
+checkout. It does not clone, commit, or export variables. PF-01 is the
+committed `packs/` set above.
 
-Registry: `states.md` + `states/<ID>.sh`. `setup.sh` fails if the script
-file is missing.
+`states/R1.sh` through `states/R7.sh` match the curbpack fixture scripts.
+Do not edit them to obtain a pass.
 
-These copies are not certification, CE marking, or a notified-body opinion.
+Evidence of the carried Studio suite on this fixture is in `RUN.txt`.
