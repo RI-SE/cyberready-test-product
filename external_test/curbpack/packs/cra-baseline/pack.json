@@ -3,7 +3,7 @@
   "name": "CRA Annex VII draft structure (informational)",
   "version": "0.1.0",
   "assurance_class": "structural_draft",
-  "description": "Structural file/header gates for CRA Annex VII drafts, an Art 14 reporting-path file, and dependency hygiene — not essential-requirements conformity. Informational — not a conformity assessment.",
+  "description": "Structural file and header gates for CRA Annex VII drafts, an Article 14 reporting-path document, and dependency hygiene. This pack provides informational structural assurance only; it does not demonstrate essential-requirements conformity or constitute a conformity assessment.",
   "jurisdiction": "EU",
   "source": {
     "framework": "EU",

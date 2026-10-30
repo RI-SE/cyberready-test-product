@@ -15,5 +15,44 @@
       "locator": "Placeholders",
       "law_text": "No placeholder patterns in medtech evidence docs."
     }
-  ]
+  ],
+  "discovery_hints": {
+    "concepts": [
+      "medical device software",
+      "software development plan",
+      "software safety classification",
+      "software requirements",
+      "software architecture",
+      "risk management",
+      "software verification",
+      "software maintenance",
+      "problem resolution"
+    ],
+    "path_hints": [
+      "docs/medtech/**/*.md",
+      "docs/iec62304/**/*.md",
+      "docs/software-development-plan.md",
+      "docs/software-safety-classification.md",
+      "docs/software-requirements.md",
+      "docs/software-architecture.md",
+      "docs/risk-management.md",
+      "docs/software-verification.md",
+      "docs/software-maintenance.md",
+      "docs/problem-resolution.md"
+    ],
+    "sources": [
+      {
+        "source": "documents"
+      },
+      {
+        "source": "git"
+      }
+    ],
+    "expected_evidence": [
+      "software lifecycle documentation",
+      "risk management documentation",
+      "verification documentation",
+      "maintenance documentation"
+    ]
+  }
 }

@@ -5,7 +5,7 @@
   "args": {
     "path": "package.json"
   },
-  "description": "No banned axios versions in dependencies or devDependencies.",
+  "description": "No banned axios versions are declared in dependencies or devDependencies.",
   "severity": "critical",
   "checks": [
     {

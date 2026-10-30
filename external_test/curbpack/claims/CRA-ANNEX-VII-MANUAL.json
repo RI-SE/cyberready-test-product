@@ -5,7 +5,7 @@
   "args": {
     "path": "docs/annex-vii/user_manual_security.md"
   },
-  "description": "User manual security sections present and bound to this repository.",
+  "description": "User manual security sections are present and bound to this repository.",
   "severity": "medium",
   "checks": [
     {

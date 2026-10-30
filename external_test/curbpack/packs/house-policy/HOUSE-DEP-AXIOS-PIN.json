@@ -15,5 +15,39 @@
       "locator": "Dependencies",
       "law_text": "No banned axios versions in dependencies or devDependencies."
     }
-  ]
+  ],
+  "discovery_hints": {
+    "concepts": [
+      "axios dependency",
+      "axios version",
+      "dependency version",
+      "development dependency",
+      "package manifest",
+      "dependency lockfile"
+    ],
+    "path_hints": [
+      "package.json",
+      "package-lock.json",
+      "npm-shrinkwrap.json",
+      "yarn.lock",
+      "pnpm-lock.yaml",
+      "**/package.json",
+      "**/package-lock.json",
+      "**/npm-shrinkwrap.json",
+      "**/yarn.lock",
+      "**/pnpm-lock.yaml"
+    ],
+    "sources": [
+      {
+        "source": "documents"
+      },
+      {
+        "source": "git"
+      }
+    ],
+    "expected_evidence": [
+      "dependency manifest",
+      "dependency lockfile"
+    ]
+  }
 }

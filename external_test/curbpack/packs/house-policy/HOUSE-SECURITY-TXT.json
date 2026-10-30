@@ -15,5 +15,33 @@
       "locator": "Security docs",
       "law_text": "security.txt present for coordinated disclosure."
     }
-  ]
+  ],
+  "discovery_hints": {
+    "concepts": [
+      "security contact",
+      "vulnerability reporting",
+      "coordinated vulnerability disclosure",
+      "security.txt",
+      "Contact field",
+      "Expires field"
+    ],
+    "path_hints": [
+      ".well-known/security.txt",
+      "**/.well-known/security.txt",
+      "security.txt",
+      "**/security.txt"
+    ],
+    "sources": [
+      {
+        "source": "documents"
+      },
+      {
+        "source": "git"
+      }
+    ],
+    "expected_evidence": [
+      "security contact information",
+      "vulnerability disclosure process"
+    ]
+  }
 }

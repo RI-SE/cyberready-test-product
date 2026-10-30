@@ -1,6 +1,6 @@
 {
   "id": "HOUSE-ANTI-PLACEHOLDER",
-  "requirement_id": "HOUSE-ANTI-PLACEHOLDER",
+  "requirement_id": "HOUSE-NO-PLACEHOLDER-SECURITY-DOCS",
   "source": "documents",
   "args": {
     "paths": [
@@ -8,7 +8,7 @@
       ".well-known/security.txt"
     ]
   },
-  "description": "No placeholder patterns in required security docs.",
+  "description": "The reviewed security documentation contains no unresolved placeholder text.",
   "severity": "high",
   "checks": [
     {

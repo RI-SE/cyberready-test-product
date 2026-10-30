@@ -101,5 +101,49 @@
       "law_text": "The Commission may, by means of implementing acts, specify further the format\nand procedures of the notifications referred to in this Article as well as in\nArticles 15 and 16. Those implementing acts shall be adopted in accordance\nwith the examination procedure referred to in Article 62(2). The Commission\nshall cooperate with the CSIRTs network and ENISA in preparing those draft\nimplementing acts."
     }
   ],
-  "strength": "MUST"
+  "strength": "MUST",
+  "discovery_hints": {
+    "concepts": [
+      "Article 14 reporting path",
+      "actively exploited vulnerability notification",
+      "severe security incident notification",
+      "CSIRT coordinator",
+      "ENISA notification",
+      "single reporting platform",
+      "24-hour early warning",
+      "72-hour notification",
+      "final report",
+      "incident reporting owner",
+      "reporting escalation",
+      "impacted user notification",
+      "incident response tabletop"
+    ],
+    "path_hints": [
+      "docs/incident/art14-path.md",
+      "docs/incident/article-14.md",
+      "docs/incident/reporting-path.md",
+      "docs/incident-response.md",
+      "docs/security-incident-response.md",
+      "SECURITY.md",
+      "**/art14-path.md",
+      "**/article-14.md",
+      "**/incident-response.md",
+      "**/reporting-path.md"
+    ],
+    "sources": [
+      {
+        "source": "documents"
+      },
+      {
+        "source": "git"
+      }
+    ],
+    "expected_evidence": [
+      "incident reporting procedure",
+      "vulnerability reporting procedure",
+      "reporting responsibilities",
+      "notification timeline",
+      "tabletop exercise record"
+    ]
+  }
 }

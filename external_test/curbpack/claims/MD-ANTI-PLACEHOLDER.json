@@ -1,7 +1,6 @@
 {
   "id": "MD-ANTI-PLACEHOLDER",
   "requirement_id": "MD-NO-PLACEHOLDER",
-  "severity": "critical",
   "source": "documents",
   "args": {
     "paths": [
@@ -11,6 +10,7 @@
     ]
   },
   "description": "The reviewed MedTech documentation contains no unresolved placeholder text.",
+  "severity": "critical",
   "checks": [
     {
       "check": "contents",

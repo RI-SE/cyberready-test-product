@@ -15,5 +15,45 @@
       "locator": "VII.3",
       "law_text": "an assessment of the cybersecurity risks against which the product with\ndigital elements is designed, developed, produced, delivered and maintained\npursuant to Article 13, including how the essential cybersecurity requirements\nset out in Part I of Annex I are applicable;"
     }
-  ]
+  ],
+  "discovery_hints": {
+    "concepts": [
+      "cybersecurity risk assessment",
+      "cybersecurity risk analysis",
+      "threat model",
+      "threat modelling",
+      "attack surface",
+      "security risks",
+      "risk treatment",
+      "risk mitigation",
+      "essential cybersecurity requirements",
+      "product-specific risks"
+    ],
+    "path_hints": [
+      "docs/annex-vii/risk_assessment.md",
+      "docs/risk_assessment.md",
+      "docs/risk-analysis.md",
+      "docs/threat-model.md",
+      "docs/threat_model.md",
+      "docs/security/risk_assessment.md",
+      "docs/security/threat-model.md",
+      "**/risk_assessment.md",
+      "**/risk-analysis.md",
+      "**/threat-model.md",
+      "**/threat_model.md"
+    ],
+    "sources": [
+      {
+        "source": "documents"
+      },
+      {
+        "source": "git"
+      }
+    ],
+    "expected_evidence": [
+      "cybersecurity risk assessment",
+      "threat model",
+      "risk treatment documentation"
+    ]
+  }
 }

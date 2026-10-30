@@ -45,6 +45,6 @@ Measurements belong to the signed-in user id. There is no remote backup. Retenti
 - `README.md` — how to run the product
 - `SECURITY.md` — vulnerability reporting
 - `.well-known/security.txt` — security contact
-- `.curbpack.json` — `house-policy` and `medtech-iec62304` (extends `cra-baseline`)
+- `curbpack.json` — `house-policy`, `cra-baseline`, `medtech-iec62304`, and `nis2`; packs, claims, results, and reports under `external_test/curbpack`
 
 Generated SQLite data, audit logs, and the process pidfile stay under `var/` and are not tracked in Git.

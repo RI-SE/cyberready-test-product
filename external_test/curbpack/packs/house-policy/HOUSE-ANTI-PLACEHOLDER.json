@@ -1,13 +1,13 @@
 {
-  "id": "HOUSE-ANTI-PLACEHOLDER",
+  "id": "HOUSE-NO-PLACEHOLDER-SECURITY-DOCS",
   "pack_id": "house-policy",
   "remediation_hint": "Replace TODO / lorem ipsum / [insert ...] with real contact and process details.",
   "source": {
     "framework": "internal",
     "instrument": "House Policy Example",
-    "identifier": "HOUSE-ANTI-PLACEHOLDER",
+    "identifier": "HOUSE-POLICY",
     "language": "en",
-    "url": "packs/house-policy/pack.json"
+    "url": "packs/house-policy/house-policy.md"
   },
   "references": [
     {
@@ -15,5 +15,39 @@
       "locator": "Security docs",
       "law_text": "No placeholder patterns in required security docs."
     }
-  ]
+  ],
+  "discovery_hints": {
+    "concepts": [
+      "security policy",
+      "security contact",
+      "vulnerability reporting",
+      "report a vulnerability",
+      "responsible disclosure",
+      "coordinated vulnerability disclosure",
+      "security response process"
+    ],
+    "path_hints": [
+      "SECURITY.md",
+      ".github/SECURITY.md",
+      ".well-known/security.txt",
+      "**/SECURITY.md",
+      "**/security.md",
+      "**/security.txt",
+      "docs/security*.md",
+      "docs/*security*.md"
+    ],
+    "sources": [
+      {
+        "source": "documents"
+      },
+      {
+        "source": "git"
+      }
+    ],
+    "expected_evidence": [
+      "security policy",
+      "vulnerability disclosure process",
+      "security contact information"
+    ]
+  }
 }

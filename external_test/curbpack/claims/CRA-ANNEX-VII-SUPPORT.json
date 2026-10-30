@@ -5,7 +5,7 @@
   "args": {
     "path": "docs/annex-vii/support_period.md"
   },
-  "description": "Support period document present with End of Support section and repo-bound product mention.",
+  "description": "Support period document is present with an End of Support section and a repository-bound product mention.",
   "severity": "high",
   "checks": [
     {

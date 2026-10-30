@@ -5,7 +5,7 @@
   "args": {
     "path": "SECURITY.md"
   },
-  "description": "SECURITY.md present with Security header and substantive content.",
+  "description": "SECURITY.md is present with a Security header and substantive content.",
   "severity": "high",
   "checks": [
     {

@@ -15,5 +15,44 @@
       "locator": "SOUP",
       "law_text": "SOUP list present with Items section."
     }
-  ]
+  ],
+  "discovery_hints": {
+    "concepts": [
+      "software of unknown provenance",
+      "SOUP inventory",
+      "third-party software",
+      "open-source software",
+      "software dependency",
+      "component version",
+      "component manufacturer",
+      "known anomalies",
+      "known vulnerabilities",
+      "component risk assessment"
+    ],
+    "path_hints": [
+      "docs/medtech/soup_list.md",
+      "docs/medtech/soup-list.md",
+      "docs/iec62304/soup_list.md",
+      "docs/iec62304/soup-list.md",
+      "docs/soup_list.md",
+      "docs/soup-list.md",
+      "docs/third-party-software.md",
+      "docs/software-inventory.md",
+      "**/soup_list.md",
+      "**/soup-list.md"
+    ],
+    "sources": [
+      {
+        "source": "documents"
+      },
+      {
+        "source": "git"
+      }
+    ],
+    "expected_evidence": [
+      "SOUP inventory",
+      "third-party software inventory",
+      "software component documentation"
+    ]
+  }
 }

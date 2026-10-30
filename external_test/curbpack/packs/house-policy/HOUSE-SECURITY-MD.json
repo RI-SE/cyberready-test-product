@@ -15,5 +15,35 @@
       "locator": "Security docs",
       "law_text": "SECURITY.md present with Security header and substantive content."
     }
-  ]
+  ],
+  "discovery_hints": {
+    "concepts": [
+      "security policy",
+      "vulnerability reporting",
+      "security contact",
+      "report a vulnerability",
+      "security response",
+      "responsible disclosure"
+    ],
+    "path_hints": [
+      "SECURITY.md",
+      "**/SECURITY.md",
+      "**/security.md",
+      ".github/SECURITY.md",
+      "docs/security*.md",
+      "docs/*security*.md"
+    ],
+    "sources": [
+      {
+        "source": "documents"
+      },
+      {
+        "source": "git"
+      }
+    ],
+    "expected_evidence": [
+      "policy",
+      "process description"
+    ]
+  }
 }

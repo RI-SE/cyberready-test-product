@@ -5,7 +5,7 @@
   "args": {
     "path": "docs/incident/art14-path.md"
   },
-  "description": "Art 14 reporting path file present with required headers and a repo-bound product mention. Documented draft only — not a live SRP check; badge shows rehearsed only after human fills Last tabletop:.",
+  "description": "Art 14 reporting path file is present with required headers and a repository-bound product mention. Documented draft only, not a live SRP check; the badge shows rehearsed only after a human completes Last tabletop:.",
   "severity": "medium",
   "checks": [
     {

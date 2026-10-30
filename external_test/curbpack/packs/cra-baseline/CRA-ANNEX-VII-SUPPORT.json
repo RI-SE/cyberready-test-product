@@ -15,5 +15,43 @@
       "locator": "VII.4",
       "law_text": "relevant information that was taken into account to determine the support\nperiod pursuant to Article 13(8) of the product with digital elements;"
     }
-  ]
+  ],
+  "discovery_hints": {
+    "concepts": [
+      "support period",
+      "product lifetime",
+      "expected use time",
+      "security support",
+      "security updates",
+      "vulnerability handling period",
+      "end of support",
+      "support period rationale"
+    ],
+    "path_hints": [
+      "docs/annex-vii/support_period.md",
+      "docs/support_period.md",
+      "docs/support-policy.md",
+      "docs/security-support.md",
+      "docs/product-lifecycle.md",
+      "SECURITY.md",
+      "**/support_period.md",
+      "**/support-policy.md",
+      "**/security-support.md",
+      "**/product-lifecycle.md"
+    ],
+    "sources": [
+      {
+        "source": "documents"
+      },
+      {
+        "source": "git"
+      }
+    ],
+    "expected_evidence": [
+      "support period declaration",
+      "support period rationale",
+      "product lifecycle documentation"
+    ]
+  }
 }
+

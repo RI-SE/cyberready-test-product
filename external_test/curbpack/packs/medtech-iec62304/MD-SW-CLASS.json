@@ -15,5 +15,45 @@
       "locator": "Software safety class",
       "law_text": "Safety class declared with rationale."
     }
-  ]
+  ],
+  "discovery_hints": {
+    "concepts": [
+      "software safety classification",
+      "software safety class",
+      "Class A",
+      "Class B",
+      "Class C",
+      "classification rationale",
+      "hazardous situation",
+      "risk control measure",
+      "software system contribution",
+      "probability of harm",
+      "severity of harm"
+    ],
+    "path_hints": [
+      "docs/medtech/software_safety_class.md",
+      "docs/medtech/software-safety-class.md",
+      "docs/iec62304/software_safety_class.md",
+      "docs/iec62304/software-safety-class.md",
+      "docs/software_safety_class.md",
+      "docs/software-safety-class.md",
+      "docs/safety-classification.md",
+      "**/software_safety_class.md",
+      "**/software-safety-class.md",
+      "**/safety-classification.md"
+    ],
+    "sources": [
+      {
+        "source": "documents"
+      },
+      {
+        "source": "git"
+      }
+    ],
+    "expected_evidence": [
+      "software safety classification",
+      "classification rationale",
+      "risk analysis documentation"
+    ]
+  }
 }

@@ -25,5 +25,40 @@
       "locator": "II.8(d)",
       "law_text": "detailed instructions or an internet address referring to such detailed\ninstructions and information on: (d) the secure decommissioning of the product\nwith digital elements, including information on how user data can be securely\nremoved;"
     }
-  ]
+  ],
+  "discovery_hints": {
+    "concepts": [
+      "user manual",
+      "user instructions",
+      "secure configuration",
+      "secure commissioning",
+      "secure use",
+      "product lifetime",
+      "secure decommissioning",
+      "product disposal",
+      "user data removal"
+    ],
+    "path_hints": [
+      "docs/annex-vii/user_manual_security.md",
+      "docs/user-manual*.md",
+      "docs/*user*manual*.md",
+      "docs/security*.md",
+      "docs/*security*.md",
+      "**/user_manual_security.md",
+      "**/*user*manual*.md"
+    ],
+    "sources": [
+      {
+        "source": "documents"
+      },
+      {
+        "source": "git"
+      }
+    ],
+    "expected_evidence": [
+      "user documentation",
+      "secure configuration instructions",
+      "secure decommissioning instructions"
+    ]
+  }
 }

@@ -15,5 +15,44 @@
       "locator": "Problem resolution",
       "law_text": "Problem resolution process documented."
     }
-  ]
+  ],
+  "discovery_hints": {
+    "concepts": [
+      "problem resolution process",
+      "defect intake",
+      "defect triage",
+      "problem investigation",
+      "root cause analysis",
+      "corrective action",
+      "problem tracking",
+      "resolution verification",
+      "regression testing",
+      "problem closure"
+    ],
+    "path_hints": [
+      "docs/problem-resolution.md",
+      "docs/problem_resolution.md",
+      "docs/medtech/problem-resolution.md",
+      "docs/iec62304/problem-resolution.md",
+      "docs/defect-management.md",
+      "docs/issue-management.md",
+      "docs/quality/problem-resolution.md",
+      "**/problem-resolution.md",
+      "**/problem_resolution.md",
+      "**/defect-management.md"
+    ],
+    "sources": [
+      {
+        "source": "documents"
+      },
+      {
+        "source": "git"
+      }
+    ],
+    "expected_evidence": [
+      "problem resolution procedure",
+      "defect management process",
+      "corrective action process"
+    ]
+  }
 }

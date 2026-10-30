@@ -93,52 +93,48 @@ Runtime files live in `var/` (gitignored):
 
 ## Curbpack
 
-`.curbpack.json` selects:
+`curbpack.json` at the repository root selects the packs and names the directories curbcheck reads. The path fields point at `external_test/curbpack`:
 
-```text
-house-policy
-medtech-iec62304
+```json
+{
+  "packs": ["house-policy", "cra-baseline", "medtech-iec62304", "nis2"],
+  "packs_dir": "external_test/curbpack/packs",
+  "claims_dir": "external_test/curbpack/claims",
+  "results_dir": "external_test/curbpack",
+  "reports_dir": "external_test/curbpack/reports",
+  "unsigned_requirements": "reject"
+}
 ```
 
-`medtech-iec62304` extends `cra-baseline`, so CRA Annex VII / Art 14 gates run through that pack. Do not also list `cra-baseline` unless you intend to name it twice; Compose already loads the base.
+The checked-in file also carries `search_hints`. Packs are `external_test/curbpack/packs/<pack-id>/pack.json`. Claims are `external_test/curbpack/claims/<claim-id>.json`. A requested run result is `external_test/curbpack/run-result_<UTC>.json`. A review report is `external_test/curbpack/reports/review-report_<UTC>.json`. `.curbpack.json` is not the selection file.
 
-Pack JSON used for ordinary `check` still comes from the Curbpack binary
-(see `curbpack-ref.txt`). Frozen pack copies, claim maps, and Curbpack
-R-state scripts live in `external_test/curbpack/`. That tree is the base.
-CTAM reuses those R/P ids and adds its own states under
-`external_test/ctam/`, applied with `SUT=ctam` through the same
-`setup.sh` / `mutate_pack.sh`. A verification case sources the
-verification-run environment (which restores the disposable clone to
-`$REFERENCE_PRODUCT_COMMIT`), then runs `setup.sh` with an R-id. Point
-`CURBPACK_PACKS_DIR` at `external_test/curbpack/packs` to evaluate those copies.
+`medtech-iec62304` used to load `cra-baseline` through `extends`. That relation is gone. `cra-baseline` is named in this file because the pack is on disk and has to be listed itself. A description that says "Extends" does not add a pack.
 
-Use a labelled pre-beta binary that includes the merged hardening reference in
-`curbpack-ref.txt`. Keep its absolute path in `CURBPACK_BIN` so PATH cannot select
-an older release. This reference is for Curbpack, not the application's version.
+CTAM reuses those R/P ids and adds its own states under `external_test/ctam/`, applied with `SUT=ctam`. A verification case sources the verification-run environment (which restores the disposable clone to `$REFERENCE_PRODUCT_COMMIT`), then runs `setup.sh` with an R-id.
+
+### Run curbcheck
+
+From this repository, with `curbcheck` on `PATH`:
+
+```bash
+curbcheck
+```
+
+That reads `curbpack.json`. `--repo` is required when the current directory has no `curbpack.json`. `--packs` replaces `external_test/curbpack/packs`. `--out` replaces the run-result file under `external_test/curbpack`.
 
 ### Step 1 — record the baseline
 
-Use a fresh disposable clone of this test product. The commands below do not
-require starting the application server:
+Use a fresh disposable clone of this test product. The command does not start the application server:
 
 ```bash
-export CURBPACK_BIN=/absolute/path/to/curbpack-prebeta
-"$CURBPACK_BIN" version
-"$CURBPACK_BIN" scan
-"$CURBPACK_BIN" check --json
-"$CURBPACK_BIN" review --repo . --json
+curbcheck
 ```
 
-The configured packs are house-policy and medtech-iec62304 (including its CRA
-base). The baseline gate check should pass; record any unexpected existing
-failure before continuing. `review --repo` is document triage, not a product
-verdict or a substitute for `make test`.
+The configured packs are house-policy and medtech-iec62304. Record any unexpected failure before continuing. This is not a substitute for `make test`.
 
-### Step 2 — remove one file and observe its gate
+### Step 2 — remove one file and observe its claim
 
-Move one file to a backup, run `check`, then restore it and recheck. Each row
-was tested independently against a passing baseline. **Do not run `share` or
-`--heal` while a file is absent:** those commands can recreate draft inputs.
+Move one file to a backup, run `curbcheck`, then restore it and recheck. Each row was tested independently against a passing baseline.
 
 | Remove X | Expected new failed gate Y |
 |---|---|
@@ -152,9 +148,9 @@ For example, from the cyberready-test-product root:
 
 ```bash
 mv SECURITY.md SECURITY.md.saved
-"$CURBPACK_BIN" check --json       # expected exit 1; HOUSE-SECURITY-MD
+curbcheck
 mv SECURITY.md.saved SECURITY.md
-"$CURBPACK_BIN" check --json       # expected exit 0 again
+curbcheck
 ```
 
 Restore the file even if a result differs. The selected packs do not define an
