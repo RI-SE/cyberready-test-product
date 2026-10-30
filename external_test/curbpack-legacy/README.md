@@ -13,11 +13,10 @@ embedded Curbpack packs (`house-policy`, `cra-baseline`, `medtech-iec62304`)
 plus a claim map for each pack. Same pack ids, so:
 
 ```bash
-export CURBPACK_PACKS_DIR="$PWD/external_test/curbpack/packs"
-curbpack check
+curbcheck --repo "$PWD"
 ```
 
-overrides the binary's embed. `.curbpack.json` is unchanged.
+`curbpack.json` at the product root selects the packs and points `packs_dir`, `claims_dir`, `results_dir`, and `reports_dir` at `external_test/curbpack`. `.curbpack.json` is not the selection file.
 
 Named pack inputs (`PF-*`) are finished files under `pf-fixtures/`. After
 the R-state, select one with `mutate_pack.sh`. The only argument is the

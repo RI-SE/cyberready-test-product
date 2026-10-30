@@ -1,4 +1,6 @@
 # Generated Curbpack output — keep it out of git.
+external_test/curbpack/reports/
+external_test/curbpack/run_results/
 /review.json
 /.github/curbpack/cache/
 /review-pack/

@@ -1,0 +1,19 @@
+{
+  "id": "MD-SOUP",
+  "pack_id": "medtech-iec62304",
+  "remediation_hint": "Maintain a SOUP inventory under docs/medtech/soup_list.md.",
+  "source": {
+    "framework": "IEC",
+    "instrument": "MedTech IEC 62304 draft overlay (informational)",
+    "identifier": "MD-SOUP",
+    "language": "en",
+    "url": "packs/medtech-iec62304/pack.json"
+  },
+  "references": [
+    {
+      "nr": 1,
+      "locator": "SOUP",
+      "law_text": "SOUP list present with Items section."
+    }
+  ]
+}

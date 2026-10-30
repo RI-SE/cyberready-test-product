@@ -1,0 +1,29 @@
+{
+  "packs": [
+    "house-policy",
+    "cra-baseline",
+    "medtech-iec62304"
+  ],
+  "search_hints": {
+    "sources": [
+      { "source": "documents" },
+      { "source": "git" }
+    ],
+    "exclude_path_globs": [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/dist/**",
+      "**/build/**"
+    ],
+    "prefer_path_globs": [
+      "**/docs/**",
+      "**/SECURITY*",
+      "**/README*"
+    ]
+  },
+  "packs_dir": "external_test/curbpack/packs",
+  "claims_dir": "external_test/curbpack/claims",
+  "results_dir": "external_test/curbpack/run_results",
+  "reports_dir": "external_test/curbpack/reports",
+  "unsigned_requirements": "reject"
+}

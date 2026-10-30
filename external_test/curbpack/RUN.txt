@@ -1,7 +1,7 @@
 REF-01 run record
-Studio docs/testing argv (packs path is this fixture):
-  python3 -m checks --repo <product-root> --packs <product-root>/external_test/curbpack-studio/packs --out <product-root>/run-result.json
-(Run from a Curbpack Studio checkout so python3 -m checks resolves.)
+Studio docs/testing argv (packs and claims are this fixture, named by curbpack.json):
+  curbcheck --repo <product-root>
+(Run from a Curbpack Studio checkout so the curbcheck command resolves. scripts/bin/curbcheck starts the checks module.)
 
 Product commit at setup: f751ffeb097cf79364426dbd3739fd4bde79ae1c
 Studio packs SOURCE commit string: b07b8deb9fed331b493241251087ce7ce648f5e4

@@ -1,0 +1,19 @@
+{
+  "id": "MD-NO-PLACEHOLDER",
+  "pack_id": "medtech-iec62304",
+  "remediation_hint": "Replace placeholders with device-specific content before release review.",
+  "source": {
+    "framework": "IEC",
+    "instrument": "MedTech IEC 62304 draft overlay (informational)",
+    "identifier": "MD-NO-PLACEHOLDER",
+    "language": "en",
+    "url": "packs/medtech-iec62304/pack.json"
+  },
+  "references": [
+    {
+      "nr": 1,
+      "locator": "Placeholders",
+      "law_text": "No placeholder patterns in medtech evidence docs."
+    }
+  ]
+}

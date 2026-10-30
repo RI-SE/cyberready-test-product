@@ -1,0 +1,19 @@
+{
+  "id": "MD-PROBLEM-RESOLUTION",
+  "pack_id": "medtech-iec62304",
+  "remediation_hint": "Describe defect intake and resolution process.",
+  "source": {
+    "framework": "IEC",
+    "instrument": "MedTech IEC 62304 draft overlay (informational)",
+    "identifier": "MD-PROBLEM-RESOLUTION",
+    "language": "en",
+    "url": "packs/medtech-iec62304/pack.json"
+  },
+  "references": [
+    {
+      "nr": 1,
+      "locator": "Problem resolution",
+      "law_text": "Problem resolution process documented."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "MD-PROBLEM-RESOLUTION",
+  "requirement_id": "MD-PROBLEM-RESOLUTION",
+  "severity": "medium",
+  "source": "documents",
+  "args": {
+    "path": "docs/medtech/problem_resolution.md"
+  },
+  "description": "The reviewed document describes the problem-resolution process.",
+  "checks": [
+    {
+      "check": "contents",
+      "args": {
+        "path": "docs/medtech/problem_resolution.md",
+        "probes": [
+          {
+            "kind": "size",
+            "bytes": 80,
+            "op": ">="
+          },
+          {
+            "kind": "headers",
+            "headers": [
+              "# Problem Resolution",
+              "## Process"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

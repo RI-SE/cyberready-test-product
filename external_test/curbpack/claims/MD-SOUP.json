@@ -1,0 +1,32 @@
+{
+  "id": "MD-SOUP",
+  "requirement_id": "MD-SOUP",
+  "severity": "high",
+  "source": "documents",
+  "args": {
+    "path": "docs/medtech/soup_list.md"
+  },
+  "description": "The reviewed document identifies the software-of-unknown-provenance inventory.",
+  "checks": [
+    {
+      "check": "contents",
+      "args": {
+        "path": "docs/medtech/soup_list.md",
+        "probes": [
+          {
+            "kind": "size",
+            "bytes": 80,
+            "op": ">="
+          },
+          {
+            "kind": "headers",
+            "headers": [
+              "# SOUP List",
+              "## Items"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

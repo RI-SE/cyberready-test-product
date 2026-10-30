@@ -1,0 +1,19 @@
+{
+  "id": "MD-SW-CLASS",
+  "pack_id": "medtech-iec62304",
+  "remediation_hint": "Document Class A/B/C rationale in docs/medtech/software_safety_class.md.",
+  "source": {
+    "framework": "IEC",
+    "instrument": "MedTech IEC 62304 draft overlay (informational)",
+    "identifier": "MD-SW-CLASS",
+    "language": "en",
+    "url": "packs/medtech-iec62304/pack.json"
+  },
+  "references": [
+    {
+      "nr": 1,
+      "locator": "Software safety class",
+      "law_text": "Safety class declared with rationale."
+    }
+  ]
+}

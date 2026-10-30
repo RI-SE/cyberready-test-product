@@ -8,15 +8,14 @@ executable manifestation and stay byte-identical to
 `setup.sh` applies `$tree/states/<ID>.sh` under `external_test/$SUT`.
 For this tree set `SUT=curbpack-studio`. A missing script is an error.
 
-Prepare the product, then run curbcheck:
+Prepare the product, then run curbcheck. `curbpack.json` at the product root points `packs_dir`, `claims_dir`, `results_dir`, and `reports_dir` at `external_test/curbpack`:
 
 ```bash
-SUT=curbpack-studio ./setup.sh R1 --commit
-# write curbpack.json and copy the seven carried claim files into claims/
-python3 -m checks --repo <product-root> \
-  --packs <product-root>/external_test/curbpack-studio/packs \
-  --out <product-root>/run-result.json
+SUT=curbpack ./setup.sh R1 --commit
+curbcheck --repo <product-root>
 ```
+
+That reads `<product-root>/curbpack.json`, loads `packs/` and `claims/` in this directory, and writes `run-result_<UTC>.json` here. `--packs` and `--out` are optional overrides.
 
 Do not export `CURBPACK_PACKS_DIR`. Do not run `curbpack check`. Do not
 use `.curbpack.json` as the Pack selection file. Use `curbpack.json`.

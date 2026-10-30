@@ -1,0 +1,31 @@
+{
+  "id": "MD-ANTI-PLACEHOLDER",
+  "requirement_id": "MD-NO-PLACEHOLDER",
+  "severity": "critical",
+  "source": "documents",
+  "args": {
+    "paths": [
+      "docs/medtech/software_safety_class.md",
+      "docs/medtech/soup_list.md",
+      "docs/medtech/problem_resolution.md"
+    ]
+  },
+  "description": "The reviewed MedTech documentation contains no unresolved placeholder text.",
+  "checks": [
+    {
+      "check": "contents",
+      "args": {
+        "paths": [
+          "docs/medtech/software_safety_class.md",
+          "docs/medtech/soup_list.md",
+          "docs/medtech/problem_resolution.md"
+        ],
+        "probes": [
+          {
+            "kind": "placeholder"
+          }
+        ]
+      }
+    }
+  ]
+}
